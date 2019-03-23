@@ -11,29 +11,24 @@ import com.julius.jobmanagementsystem.utils.Common;
 import com.julius.jobmanagementsystem.utils.Config;
 import com.julius.jobmanagementsystem.utils.DownloadUtils;
 import com.julius.jobmanagementsystem.utils.ExcelUtil;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.Map.Entry;
 
 @Service("downLoadService")
 @Transactional
 public class DownLoadServiceImpl implements DownLoadService {
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+    private final Logger logger = LogManager.getLogger(getClass());
     @Autowired
     private ResultDao resultDao;
 
@@ -53,7 +48,7 @@ public class DownLoadServiceImpl implements DownLoadService {
         //获取作业绝对路径
         String taskPath = Config.title;
         //将作业进行压缩再进行下载
-        String zipPath = Config.tmpDir;
+        String zipPath = Config.IMPORT_INFO;
 
         //文件夹不存在创建
         File zipPathExists = new File(zipPath);
@@ -71,7 +66,7 @@ public class DownLoadServiceImpl implements DownLoadService {
         try {
             DownloadUtils.download(zipPath, zipFileName, request, response);
         } catch (Exception e) {
-            logger.error("error:{}", e.getMessage());
+            logger.error("error:{}", e);
         }
 
     }
@@ -84,7 +79,7 @@ public class DownLoadServiceImpl implements DownLoadService {
         String basePath = Config.task;
 
         //所有作业的压缩文件的临时存放路径
-        String zipPath = Config.tmpDir;
+        String zipPath = Config.IMPORT_INFO;
 
         //文件夹不存在则创建
         File pathExists = new File(basePath);
@@ -97,7 +92,7 @@ public class DownLoadServiceImpl implements DownLoadService {
         }
 
         File resultDir = new File(basePath + taskId + "/" + stuId);
-        logger.debug("resultPath:{}", resultDir);
+        logger.debug(resultDir);
         if (!resultDir.exists()) {
             logger.debug("作业不存在");
             String message = "<html><body><h2>Sorry!不存在该作业文件!</h2></body></html>";
@@ -118,7 +113,7 @@ public class DownLoadServiceImpl implements DownLoadService {
         try {
             DownloadUtils.download(zipPath, zipFileName, request, response);
         } catch (Exception e) {
-            logger.error("error:{}", e.getMessage());
+            logger.error("error:{}", e);
         }
     }
 
@@ -160,7 +155,7 @@ public class DownLoadServiceImpl implements DownLoadService {
             stuScoreMap.put(s, scoreList);
         }
 
-        String excelPath = Config.tmpDir;//"F:\\upload\\tmp\\";
+        String excelPath = Config.IMPORT_INFO;
         //判断文件夹不存在创建
         File file = new File(excelPath);
         if (!file.exists()) {

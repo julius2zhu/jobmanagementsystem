@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.julius.jobmanagementsystem.domain.repository.TaskDao">
+
+    <resultMap id="TaskMap" type="Task">
+        <id column="task_id" jdbcType="INTEGER" property="taskId"/>
+        <result column="task_name" jdbcType="VARCHAR" property="taskName"/>
+        <result column="task_download_name" jdbcType="VARCHAR" property="taskDownloadName"/>
+        <result column="task_rule" jdbcType="VARCHAR" property="taskRule"/>
+        <result column="task_expiry" jdbcType="TIMESTAMP" property="taskExpiry"/>
+        <result column="task_minsize" jdbcType="INTEGER" property="taskMinsize"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    task_id, task_name, task_download_name,task_rule,task_expiry,task_minsize
+    </sql>
+
+    <select id="selectByTaskId" resultMap="TaskMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM task
+        <where>
+            task_id = #{taskId} AND delete_flag='1'
+        </where>
+    </select>
+
+    <select id="selectByTaskName" resultMap="TaskMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM task
+        <where>
+            task_name = #{taskName} AND delete_flag='1'
+        </where>
+    </select>
+
+    <select id="findAllTasks" resultMap="TaskMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM task
+        <where>
+            AND delete_flag='1'
+        </where>
+        ORDER BY task_id DESC
+    </select>
+
+    <select id="finTaskByStudentId" resultType="Task">
+     SELECT
+	  r.task_id AS taskId,
+	  t.task_name AS taskName
+     FROM
+	  result r
+      RIGHT  JOIN task t ON r.task_id = t.task_id
+      WHERE
+	r.stu_id =#{studentId}
+    </select>
+
+    <delete id="deleteByTaskId">
+        DELETE FROM task
+        WHERE  task_id = #{taskId}
+    </delete>
+
+    <insert id="insert">
+      INSERT INTO task
+       (task_id, task_name, task_download_name,
+       task_rule, task_expiry, task_minsize)
+      VALUES (
+       #{taskId},
+       #{taskName},
+       #{taskDownloadName},
+       #{taskRule},
+       #{taskExpiry},
+       #{taskMinsize}
+       )
+   </insert>
+
+    <insert id="insertSelective">
+        INSERT INTO task
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="taskId != null">
+                task_id,
+            </if>
+            <if test="taskName != null">
+                task_name,
+            </if>
+            <if test="taskPath != null">
+                task_path,
+            </if>
+            <if test="taskRule != null">
+                task_rule,
+            </if>
+            <if test="taskExpiry != null">
+                task_expiry,
+            </if>
+            <if test="taskMinsize != null">
+                task_minsize,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="taskId != null">
+                #{taskId},
+            </if>
+            <if test="taskName != null">
+                #{taskName,jdbcType=VARCHAR},
+            </if>
+            <if test="taskPath != null">
+                #{taskPath,jdbcType=VARCHAR},
+            </if>
+            <if test="taskRule != null">
+                #{taskRule,jdbcType=VARCHAR},
+            </if>
+            <if test="taskExpiry != null">
+                #{taskExpiry,jdbcType=TIMESTAMP},
+            </if>
+            <if test="taskMinsize != null">
+                #{taskMinsize,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByTaskIdSelective">
+        UPDATE task
+        <set>
+            <if test="taskName!= null">
+                task_name = #{taskName,jdbcType=VARCHAR},
+            </if>
+            <if test="taskDownloadName!= null">
+                task_download_name = #{taskDownloadName,jdbcType=VARCHAR},
+            </if>
+            <if test="taskRule != null">
+                task_rule = #{taskRule,jdbcType=VARCHAR},
+            </if>
+            <if test="taskExpiry != null">
+                task_expiry = #{taskExpiry,jdbcType=TIMESTAMP},
+            </if>
+            <if test="taskMinsize != null">
+                task_minsize = #{taskMinsize,jdbcType=INTEGER},
+            </if>
+        </set>
+        WHERE task_id = #{taskId,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateByTaskId">
+    UPDATE task
+    SET task_name = #{taskName},
+      task_path = #{taskPath},
+      task_rule = #{taskRule},
+      task_expiry = #{taskExpiry},
+      task_minsize = #{taskMinsize}
+    WHERE task_id = #{taskId}
+  </update>
+</mapper>

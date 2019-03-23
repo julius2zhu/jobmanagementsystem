@@ -6,6 +6,7 @@ import lombok.Setter;
 @Setter
 @Getter
 public class Teacher {
+    private Long id;
     //	教师ID
     private String teaId;
     //教师姓名

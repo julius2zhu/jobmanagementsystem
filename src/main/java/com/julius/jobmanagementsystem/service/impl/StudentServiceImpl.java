@@ -7,6 +7,7 @@ import com.julius.jobmanagementsystem.utils.StudentUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 @Service("studentService")
@@ -16,31 +17,26 @@ public class StudentServiceImpl implements StudentService {
 	private StudentDao studentDao;
 
 	public int addStuList(List<Student> list) {
-		// TODO Auto-generated method stub
 		if (list.get(0).getStuPwd() == null)
 			list = StudentUtils.initialStudentPassword(list);
 		return studentDao.insertBatch(list);
 	}
 
 	public int addStu(Student stu) {
-		// TODO Auto-generated method stub
 		if (stu.getStuPwd() == null)
 			stu = StudentUtils.resetStudentPassword(stu);
 		return studentDao.insert(stu);
 	}
 
 	public int deleteStuByStuId(String stuId) {
-		// TODO Auto-generated method stub
 		return studentDao.deleteByStuId(stuId);
 	}
 
 	public int deleteAll(List<String> stuIdList) {
-		// TODO Auto-generated method stub
 		return studentDao.deleteBatch(stuIdList);
 	}
 
 	public int updatePasswordByStuId(String stuId, String pwd) {
-		// TODO Auto-generated method stub
 		Student stu = new Student();
 		stu.setStuId(stuId);
 		stu.setStuPwd(pwd);

@@ -10,6 +10,9 @@ import com.julius.jobmanagementsystem.service.TaskService;
 import com.julius.jobmanagementsystem.utils.Config;
 import com.julius.jobmanagementsystem.utils.FileUtils;
 import com.julius.jobmanagementsystem.utils.UploadUtils;
+import com.julius.jobmanagementsystem.utils.readExcel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,9 +31,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class TeacherController {
+    private final Logger LOGGER = LoggerFactory.getLogger(getClass());
     @Autowired
     private ResultService resultService;
     @Autowired
@@ -218,6 +223,10 @@ public class TeacherController {
             taskId = tasks.get(0).getTaskId();
             taskId++;
             task.setTaskId(taskId);
+        } else {
+            //第一次操作,数据库没有数据
+            taskId++;
+            task.setTaskId(taskId);
         }
         //文件存放路径,绝对路径+作业id
         String road = Config.title + task.getTaskId();
@@ -235,8 +244,8 @@ public class TeacherController {
                 task.setTaskExpiry(date);
                 // 把作业记录添加到数据库中
                 taskService.addTask(task);
-            } catch (ParseException e1) {
-                e1.printStackTrace();
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
 
             // 在result中添加记录，作业和所有的学生
@@ -296,5 +305,49 @@ public class TeacherController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 从excel中导入学生名单
+     * 功能异常
+     *
+     * @param uploadfile 需要被导入的文件
+     * @return
+     */
+    @RequestMapping(value = "/importStudent", method = RequestMethod.POST)
+    public String importStudent(@RequestParam(value = "uploadfile", required = false) final MultipartFile[] uploadfile) {
+        LOGGER.debug("import  running");
+        String road = Config.IMPORT_INFO;
+        File file = new File(road);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        UploadUtils up = new UploadUtils();
+        readExcel rExcel = new readExcel();
+        List<String> filename = up.upload(uploadfile, road);
+        for (String string : filename) { //遍历filename中所有的文件，内容存到result中
+            List<Map<String, String>> result = new ArrayList<Map<String, String>>();//对应excel文件
+            try {
+                String s = road + string;
+                result = rExcel.readStudent(road + string);
+            } catch (Exception e) {
+                LOGGER.error("error:{}", e.getMessage());
+            }
+            LOGGER.debug(result.size() + "");
+            for (Map<String, String> map : result) {
+                Student student = new Student();
+//                student.setStuId(map.get("学号"));
+//                student.setStuName(map.get("姓名"));
+//                student.setStuPwd(map.get("密码"));
+                try {
+                    studentService.addStu(student);
+                } catch (Exception e) {
+                    LOGGER.error("error:{}", e.getMessage());
+                }
+            }
+
+        }
+        return "redirect:/managejob";
+
     }
 }

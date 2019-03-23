@@ -8,7 +8,7 @@ public class Config {
     //存放学生提交的作业存放路径
     public static final String task = "C:/task/student/homework/upload/";
     //评分文件生成目录
-    public static final String tmpDir = "C:/task/score/download/";
+    public static final String IMPORT_INFO = "C:/task/student/importInfo/";
 
     //临时存放打包压缩文件位置
     public static final String TEMP_COMPRESS_PATH = "C:/task/temp/download/";

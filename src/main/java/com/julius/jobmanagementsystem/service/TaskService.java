@@ -89,4 +89,11 @@ public interface TaskService {
      */
     List<Task> findAllTasks();
 
+    /**
+     * 根据学生学号查询课程信息
+     *
+     * @param studentId 学生学号
+     * @return 课程信息对象集合
+     */
+    List<Task> finTaskByStudentId(Integer studentId);
 }

@@ -53,12 +53,16 @@ public class TaskServiceImpl implements TaskService {
 	}
 
 	public Task findTaskByTaskId(Integer taskId) {
-		// TODO Auto-generated method stub
 		return taskDao.selectByTaskId(taskId);
 	}
 
 	public List<Task> findAllTasks() {
 		return taskDao.findAllTasks();
+	}
+
+	@Override
+	public List<Task> finTaskByStudentId(Integer studentId) {
+		return  taskDao.finTaskByStudentId(studentId) ;
 	}
 
 	@Override

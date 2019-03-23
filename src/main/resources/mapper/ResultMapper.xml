@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.julius.jobmanagementsystem.domain.repository.ResultDao">
+
+    <resultMap id="ResultMap" type="Result">
+        <id column="stu_id" property="stuId"/>
+        <id column="task_id" property="taskId"/>
+        <result column="submit" property="submit"/>
+        <result column="score" property="score"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+     stu_id, task_id, submit, score
+  </sql>
+
+    <select id="selectByPrimaryKey" resultMap="ResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM result
+        <where>
+            stu_id = #{stuId}
+            AND task_id = #{taskId}
+            AND delete_flag='1'
+        </where>
+    </select>
+
+    <select id="selectByStuId" resultMap="ResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM result
+        <where>
+            stu_id = #{stuId}
+            AND delete_flag='1'
+        </where>
+    </select>
+
+    <select id="selectByTaskId" resultMap="ResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM result
+        <where>
+            task_id = #{taskId}
+            AND delete_flag='1'
+        </where>
+    </select>
+
+    <select id="selectAll" resultMap="ResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM result
+        <where>
+            WHERE AND delete_flag='1'
+        </where>
+    </select>
+
+    <select id="selectTaskByPage" resultMap="ResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM result
+        <where>
+            task_id=#{taskId} AND delete_flag='1'
+            limit #{begin},#{size}
+        </where>
+    </select>
+
+    <select id="findTaskIsSubmit" resultType="java.lang.Integer">
+        SELECT COUNT(*)  FROM result
+        <where>
+            AND stu_id=#{studentId}
+            AND task_id=#{taskId} AND submit='1'
+        </where>
+    </select>
+
+    <delete id="deleteByPrimaryKey">
+     DELETE FROM  result
+     WHERE        stu_id = #{stuId}
+     AND          task_id = #{taskId}
+  </delete>
+    <delete id="deleteByStuId">
+    DELETE FROM result
+    WHERE       stu_id = #{stuId}
+  </delete>
+    <delete id="deleteByTaskId">
+    DELETE  FROM result
+    WHERE   task_id = #{taskId}
+  </delete>
+
+    <insert id="insert">
+    INSERT INTO result
+        (stu_id, task_id, submit, score)
+    VALUES
+        (#{stuId}, #{taskId}, #{submit}, #{score})
+  </insert>
+
+    <insert id="insertSelective">
+        INSERT INTO result
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="stuId != null">
+                stu_id,
+            </if>
+            <if test="taskId != null">
+                task_id,
+            </if>
+            <if test="submit != null">
+                submit,
+            </if>
+            <if test="score != null">
+                score,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="stuId != null">
+                #{stuId},
+            </if>
+            <if test="taskId != null">
+                #{taskId},
+            </if>
+            <if test="submit != null">
+                #{submit},
+            </if>
+            <if test="score != null">
+                #{score},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective">
+        UPDATE result
+        <set>
+            <if test="submit != null">
+                submit = #{submit},
+            </if>
+            <if test="score != null">
+                score = #{score},
+            </if>
+        </set>
+        WHERE stu_id = #{stuId}
+        AND task_id = #{taskId}
+    </update>
+
+    <update id="updateByPrimaryKey">
+    UPDATE  result
+    SET     submit = #{submit},
+            score = #{score}
+    WHERE   stu_id = #{stuId}
+    AND     task_id = #{taskId}
+  </update>
+</mapper>

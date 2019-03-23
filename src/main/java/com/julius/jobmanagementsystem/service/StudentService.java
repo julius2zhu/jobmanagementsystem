@@ -12,7 +12,7 @@ public interface StudentService {
      * @param list
      * @return
      */
-    int addStuList(List<Student> list) throws Exception;
+    int addStuList(List<Student> list);
 
     /**
      * 插入单个学生信息
@@ -20,7 +20,7 @@ public interface StudentService {
      * @param stu
      * @return
      */
-    int addStu(Student stu) throws Exception;
+    int addStu(Student stu);
 
     /**
      * 根据学生id删除学生信息
@@ -28,7 +28,7 @@ public interface StudentService {
      * @param stuId
      * @return
      */
-    public int deleteStuByStuId(String stuId) throws Exception;
+    public int deleteStuByStuId(String stuId);
 
     /**
      * 根据id删除list中所有学生信息

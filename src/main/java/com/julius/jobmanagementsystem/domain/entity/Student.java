@@ -6,6 +6,7 @@ import lombok.Setter;
 @Setter
 @Getter
 public class Student {
+    private Long id;
     //学生ID
     private String stuId;
     //学生姓名

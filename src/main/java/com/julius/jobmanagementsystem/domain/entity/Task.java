@@ -8,7 +8,7 @@ import java.util.Date;
 @Setter
 @Getter
 public class Task {
-
+    private Long id;
     //作业ID
     private Integer taskId;
 

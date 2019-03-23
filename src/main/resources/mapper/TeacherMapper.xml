@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.julius.jobmanagementsystem.domain.repository.TeacherDao">
+
+    <resultMap id="TeacherMap" type="Teacher">
+        <id column="tea_id" jdbcType="CHAR" property="teaId"/>
+        <result column="tea_name" jdbcType="CHAR" property="teaName"/>
+        <result column="tea_pwd" jdbcType="VARCHAR" property="teaPwd"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    tea_id, tea_name, tea_pwd
+  </sql>
+
+    <select id="selectByTeaId" resultMap="TeacherMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM teacher
+        <where>
+            tea_id = #{teaId,jdbcType=CHAR}
+            AND delete_flag='1'
+        </where>
+    </select>
+
+    <select id="selectAllTeacher" resultMap="TeacherMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM teacher
+        <where>
+            AND delete_flag='1'
+        </where>
+    </select>
+
+    <delete id="deleteByTeaId">
+    DELETE FROM teacher
+    WHERE  tea_id = #{teaId,jdbcType=CHAR}
+   </delete>
+
+    <insert id="insert">
+    INSERT  INTO teacher (tea_id, tea_name, tea_pwd)
+    values
+    (#{teaId,jdbcType=CHAR},
+    #{teaName,jdbcType=CHAR},
+    #{teaPwd,jdbcType=VARCHAR}
+    )
+  </insert>
+
+    <insert id="insertSelective">
+        INSERT INTO teacher
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="teaId != null">
+                tea_id,
+            </if>
+            <if test="teaName != null">
+                tea_name,
+            </if>
+            <if test="teaPwd != null">
+                tea_pwd,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="teaId != null">
+                #{teaId,jdbcType=CHAR},
+            </if>
+            <if test="teaName != null">
+                #{teaName,jdbcType=CHAR},
+            </if>
+            <if test="teaPwd != null">
+                #{teaPwd,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByTeaIdSelective">
+        UPDATE teacher
+        <set>
+            <if test="teaName != null">
+                tea_name = #{teaName,jdbcType=CHAR},
+            </if>
+            <if test="teaPwd != null">
+                tea_pwd = #{teaPwd,jdbcType=VARCHAR},
+            </if>
+        </set>
+        WHERE tea_id = #{teaId,jdbcType=CHAR}
+    </update>
+
+    <update id="updateByTeaId">
+    UPDATE teacher
+    SET    tea_name = #{teaName,jdbcType=CHAR},
+           tea_pwd = #{teaPwd,jdbcType=VARCHAR}
+    WHERE  tea_id = #{teaId,jdbcType=CHAR}
+  </update>
+
+</mapper>

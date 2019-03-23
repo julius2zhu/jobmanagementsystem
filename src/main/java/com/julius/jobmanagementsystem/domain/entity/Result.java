@@ -6,6 +6,7 @@ import lombok.Setter;
 @Setter
 @Getter
 public class Result {
+    private Long id;
     //学生ID
     private String stuId;
     //作业ID
@@ -14,6 +15,7 @@ public class Result {
     private Boolean submit;
     //作业分数
     private Integer score;
+
     @Override
     public String toString() {
         return "Result{" +
