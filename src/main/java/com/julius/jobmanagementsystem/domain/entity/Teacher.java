@@ -1,0 +1,24 @@
+package com.julius.jobmanagementsystem.domain.entity;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
+public class Teacher {
+    //	教师ID
+    private String teaId;
+    //教师姓名
+    private String teaName;
+    //教师登录密码
+    private String teaPwd;
+
+    @Override
+    public String toString() {
+        return "Teacher{" +
+                "teaId='" + teaId + '\'' +
+                ", teaName='" + teaName + '\'' +
+                ", teaPwd='" + teaPwd + '\'' +
+                '}';
+    }
+}
