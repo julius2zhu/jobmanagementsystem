@@ -13,7 +13,14 @@
     <!-- <mvc:annotation-driven />开启设置可以替代 -->
     <!-- <bean id="handlerMapping" class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>
     <bean id="handlerAdapter" class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"/> -->
-    <mvc:annotation-driven/>
+    <mvc:annotation-driven>
+        <!-- 消息转换器,处理中文乱码 -->
+        <mvc:message-converters register-defaults="true">
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <property name="supportedMediaTypes" value="text/html;charset=UTF-8"/>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
     <!-- 静态资源 -->
     <!--<mvc:resources location="/images/" mapping="/images/**"/>-->
     <!--<mvc:resources location="/js/" mapping="/js/**"/>-->

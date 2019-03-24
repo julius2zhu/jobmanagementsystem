@@ -3,6 +3,7 @@ package com.julius.jobmanagementsystem.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.julius.jobmanagementsystem.domain.entity.Task;
 import com.julius.jobmanagementsystem.service.ResultService;
+import com.julius.jobmanagementsystem.service.StudentService;
 import com.julius.jobmanagementsystem.service.TaskService;
 import com.julius.jobmanagementsystem.utils.Common;
 import org.apache.log4j.LogManager;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -27,15 +29,18 @@ import java.util.List;
 public class StudentController {
     private ResultService resultService;
     private TaskService taskService;
-    private Logger logger = LogManager.getLogger(getClass());
+    private final Logger LOGGER = LogManager.getLogger(getClass());
+    private StudentService studentService;
 
     public StudentController() {
     }
 
     @Autowired
-    public StudentController(final ResultService resultService, final TaskService taskService) {
+    public StudentController(final ResultService resultService, final TaskService taskService,
+                             final StudentService studentService) {
         this.resultService = resultService;
         this.taskService = taskService;
+        this.studentService = studentService;
     }
 
     /**
@@ -85,6 +90,21 @@ public class StudentController {
         }
     }
 
+    @RequestMapping(value = "/appLogin")
+    @ResponseBody
+    public String appLogin(final @RequestParam(value = "studentId", required = true) String studentId,
+                           final @RequestParam(value = "password", required = true) String password) {
+        String loginResult = "成功";
+        int result = studentService.login(studentId, password);
+        //成功返回1，否则返回0,id不存在返回-1
+        if (result == 0) {
+            loginResult = "登录失败,请检查账号或者密码";
+        } else if (result == -1) {
+            loginResult = "账号不存在";
+        }
+        return loginResult;
+    }
+
     /**
      * 处理APP端作业上传
      *
@@ -93,10 +113,13 @@ public class StudentController {
      * @param uploadFile 上传文件对象
      * @return 上传结果
      */
+    @ResponseBody
+    @RequestMapping(value = "/appUpload", method = RequestMethod.POST)
     public String appUploadTask(final @RequestParam("taskId") Integer taskId,
                                 final @RequestParam("studentId") String studentId,
                                 final @RequestParam(value = "uploadFile", required = false)
                                         MultipartFile[] uploadFile) {
+        LOGGER.debug("submit  task");
         String result = "提交成功";
         //检查是否已经超过提交时间限制
         Integer flag = Common.checkSubmitDate(taskId);
@@ -126,7 +149,7 @@ public class StudentController {
     @RequestMapping(value = "/taskIsSubmit",
             method = RequestMethod.POST)
     @ResponseBody
-    public String taskIsSubmit(Integer taskId, Integer studentId) {
+    public String appTaskIsSubmit(Integer taskId, Integer studentId) {
         String result = "";
         if (resultService.findTaskIsSubmit(studentId, taskId) > 0) {
             result = "作业已经提交,本次提交将会覆盖之前作业,确认是否提交?";
@@ -142,8 +165,7 @@ public class StudentController {
      */
     @RequestMapping(value = "/getTasks")
     @ResponseBody
-    public List<Task> getTasks(Integer studentId) {
-        logger.debug("okokokok");
+    public List<Task> appGetTasks(Integer studentId) {
         List<Task> tasks = taskService.finTaskByStudentId(studentId);
         return tasks.size() > 0 ? tasks : Collections.emptyList();
     }

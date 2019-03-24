@@ -90,8 +90,8 @@ public interface StudentService {
     /**
      * 判断登录是否成功，成功返回1，否则返回0,id不存在返回-1
      *
-     * @param stuId
-     * @param pwd
+     * @param stuId 学生账号
+     * @param pwd   学生密码
      * @return
      */
     int login(String stuId, String pwd);

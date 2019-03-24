@@ -57,7 +57,6 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	public String findStudentPwdByStuId(String stuId) throws Exception{
-		// TODO Auto-generated method stub
 		return studentDao.selectByStuId(stuId).getStuPwd();
 	}
 
@@ -72,14 +71,12 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	public int login(String stuId, String pwd)  {
-		// TODO Auto-generated method stub
 		try {
 			if (pwd.equals(findStudentPwdByStuId(stuId)))
 				return 1;
 			else
 				return 0;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			return -1;
 		}
 	}
