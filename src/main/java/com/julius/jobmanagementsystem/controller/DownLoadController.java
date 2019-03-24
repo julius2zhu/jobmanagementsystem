@@ -77,7 +77,6 @@ public class DownLoadController {
     @RequestMapping(value = "/results/{taskIds}", method = RequestMethod.GET)
     public void downloadAllResults(@PathVariable("taskIds") String taskIds,
                                    HttpServletRequest request, HttpServletResponse response) {
-        System.out.println("taskId: " + taskIds);
         //将传来的id拼接成的字符串拆分为List<Integer>
         List<Integer> ids = new ArrayList<Integer>();
         String[] idStrs = taskIds.split(",");

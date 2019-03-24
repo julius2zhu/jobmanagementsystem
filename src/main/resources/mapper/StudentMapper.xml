@@ -87,6 +87,11 @@
         </trim>
     </insert>
 
+    <insert id="register">
+        INSERT  INTO student(stu_id,stu_name,stu_pwd)
+        VALUES  (#{stuId},#{stuName},#{stuPwd})
+    </insert>
+
     <update id="updateByStuIdSelective">
         UPDATE student
         <set>

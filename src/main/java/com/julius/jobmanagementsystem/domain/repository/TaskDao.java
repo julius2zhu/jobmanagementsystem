@@ -29,10 +29,10 @@ public interface TaskDao {
     /**
      * 通过taskId删除作业记录
      *
-     * @param taskId
-     * @return
+     * @param id 被删除的主键
+     * @return 受影响行数
      */
-    int deleteByTaskId(Integer taskId);
+    Integer deleteTaskById(Long id);
 
     /**
      * 通过taskId查询作业

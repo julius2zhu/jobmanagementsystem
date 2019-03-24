@@ -18,10 +18,10 @@ public interface TaskService {
     /**
      * 根据作业id删除作业
      *
-     * @param taskId
-     * @return
+     * @param id 作业主键
+     * @return 受影响行数
      */
-    public int deleteTaskByTaskId(Integer taskId) throws Exception;
+    Integer deleteTaskById(Long id);
 
     /**
      * 删除所有作业
@@ -55,7 +55,7 @@ public interface TaskService {
      * @param taskExpiry
      * @return
      */
-    public int updatetaskExpiryByTaskId(Integer taskId, Date taskExpiry) throws Exception;
+    int updatetaskExpiryByTaskId(Integer taskId, Date taskExpiry) throws Exception;
 
     /**
      * 根据作业id更新作业最小大小
@@ -64,7 +64,7 @@ public interface TaskService {
      * @param minsize
      * @return
      */
-    public int updateMinsizeByTaskId(Integer taskId, Integer minsize) throws Exception;
+    int updateMinsizeByTaskId(Integer taskId, Integer minsize) throws Exception;
 
     /**
      * 根据作业id查找作业
@@ -72,7 +72,7 @@ public interface TaskService {
      * @param taskId
      * @return
      */
-    public Task findTaskByTaskId(Integer taskId) throws Exception;
+    Task findTaskByTaskId(Integer taskId) throws Exception;
 
     /**
      * 根据作业name查找作业

@@ -18,9 +18,8 @@ public class TaskServiceImpl implements TaskService {
 		return taskDao.insert(task);
 	}
 
-	public int deleteTaskByTaskId(Integer taskId) {
-		// TODO Auto-generated method stub
-		return taskDao.deleteByTaskId(taskId);
+	public Integer deleteTaskById(Long id) {
+		return taskDao.deleteTaskById(id);
 	}
 
 	// 暂未实现 

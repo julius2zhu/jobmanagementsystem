@@ -94,5 +94,13 @@ public interface StudentService {
      * @param pwd   学生密码
      * @return
      */
-    int login(String stuId, String pwd);
+    Integer login(String stuId, String pwd);
+
+    /**
+     * 处理APP端学生注册
+     *
+     * @param student 学生实体对象
+     * @return 受影响的行数
+     */
+    Integer register(Student student);
 }

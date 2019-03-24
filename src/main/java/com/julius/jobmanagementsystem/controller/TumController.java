@@ -38,7 +38,6 @@ public class TumController {
         try {
             taskList = taskService.findAllTasks();
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         model.addAttribute("taskList", taskList);
@@ -79,7 +78,6 @@ public class TumController {
         try {
             taskList = taskService.findAllTasks();
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         model.addAttribute("taskList", taskList);

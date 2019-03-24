@@ -10,7 +10,6 @@ import com.julius.jobmanagementsystem.service.TaskService;
 import com.julius.jobmanagementsystem.utils.Config;
 import com.julius.jobmanagementsystem.utils.FileUtils;
 import com.julius.jobmanagementsystem.utils.UploadUtils;
-import com.julius.jobmanagementsystem.utils.readExcel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +30,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 public class TeacherController {
@@ -308,6 +306,21 @@ public class TeacherController {
     }
 
     /**
+     * 教师删除作业,单项删除
+     *
+     * @param id 被删除的作业id主键
+     * @return
+     */
+    @RequestMapping(value = "/deleteTask")
+    public String deleteTaskById(Long id) {
+        LOGGER.debug("delete:{}", id);
+        Integer result = taskService.deleteTaskById(id);
+        //先不判断,都返回页面
+        //重定向到作业管理页面
+        return "redirect:/managejob";
+    }
+
+    /**
      * 从excel中导入学生名单
      * 功能异常
      *
@@ -321,31 +334,6 @@ public class TeacherController {
         File file = new File(road);
         if (!file.exists()) {
             file.mkdirs();
-        }
-        UploadUtils up = new UploadUtils();
-        readExcel rExcel = new readExcel();
-        List<String> filename = up.upload(uploadfile, road);
-        for (String string : filename) { //遍历filename中所有的文件，内容存到result中
-            List<Map<String, String>> result = new ArrayList<Map<String, String>>();//对应excel文件
-            try {
-                String s = road + string;
-                result = rExcel.readStudent(road + string);
-            } catch (Exception e) {
-                LOGGER.error("error:{}", e.getMessage());
-            }
-            LOGGER.debug(result.size() + "");
-            for (Map<String, String> map : result) {
-                Student student = new Student();
-//                student.setStuId(map.get("学号"));
-//                student.setStuName(map.get("姓名"));
-//                student.setStuPwd(map.get("密码"));
-                try {
-                    studentService.addStu(student);
-                } catch (Exception e) {
-                    LOGGER.error("error:{}", e.getMessage());
-                }
-            }
-
         }
         return "redirect:/managejob";
 

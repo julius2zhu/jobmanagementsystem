@@ -1,6 +1,7 @@
 package com.julius.jobmanagementsystem.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.julius.jobmanagementsystem.domain.entity.Student;
 import com.julius.jobmanagementsystem.domain.entity.Task;
 import com.julius.jobmanagementsystem.service.ResultService;
 import com.julius.jobmanagementsystem.service.StudentService;
@@ -90,6 +91,13 @@ public class StudentController {
         }
     }
 
+    /**
+     * 处理app端学生登录
+     *
+     * @param studentId 学生学号/登录账号
+     * @param password  学生密码/登录密码
+     * @return 结果
+     */
     @RequestMapping(value = "/appLogin")
     @ResponseBody
     public String appLogin(final @RequestParam(value = "studentId", required = true) String studentId,
@@ -103,6 +111,35 @@ public class StudentController {
             loginResult = "账号不存在";
         }
         return loginResult;
+    }
+
+    /**
+     * 处理app端学生注册
+     *
+     * @param studentId   学生学号
+     * @param studentName 学生姓名
+     * @param password    学生密码
+     * @return 成功/失败/已经存在
+     */
+    @RequestMapping(value = "/appRegister")
+    @ResponseBody
+    public String appRegister(final @RequestParam(value = "studentId", required = true) String studentId,
+                              final @RequestParam(value = "studentName", required = true) String studentName,
+                              final @RequestParam(value = "password", required = true) String password) {
+        String registerResult = "成功";
+        //封装成POJO对象
+        Student student = new Student();
+        student.setStuId(studentId);
+        student.setStuName(studentName);
+        student.setStuPwd(password);
+        LOGGER.debug(student);
+        Integer result = studentService.register(student);
+        if (result == 0) {
+            registerResult = "账号已经存在,请重新输入!";
+        } else if (result == -1) {
+            registerResult = "服务器出错,请稍后再试!";
+        }
+        return registerResult;
     }
 
     /**

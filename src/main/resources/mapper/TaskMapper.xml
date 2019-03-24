@@ -12,7 +12,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-    task_id, task_name, task_download_name,task_rule,task_expiry,task_minsize
+    id,task_id, task_name, task_download_name,task_rule,task_expiry,task_minsize
     </sql>
 
     <select id="selectByTaskId" resultMap="TaskMap">
@@ -54,9 +54,9 @@
 	r.stu_id =#{studentId}
     </select>
 
-    <delete id="deleteByTaskId">
-        DELETE FROM task
-        WHERE  task_id = #{taskId}
+    <delete id="deleteTaskById">
+        UPDATE  task SET delete_flag='0'
+        WHERE   id=#{id}
     </delete>
 
     <insert id="insert">
