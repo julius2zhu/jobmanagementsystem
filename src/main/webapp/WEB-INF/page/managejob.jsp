@@ -56,7 +56,7 @@
                         <div class="button-group">
                             <a name="edit" class="button border-main" href="javascript:;"><span
                                     class="icon-edit"></span>修改</a>
-                            <a class="button border-red" href="/deleteTask?id=${task.id}"><span
+                            <a class="button border-red" href="deleteTask?id=${task.id}"><span
                                     class="icon-trash-o"></span>删除</a>
                         </div>
                     </td>
