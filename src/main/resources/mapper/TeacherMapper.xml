@@ -3,14 +3,18 @@
 <mapper namespace="com.julius.jobmanagementsystem.domain.repository.TeacherDao">
 
     <resultMap id="TeacherMap" type="Teacher">
-        <id column="tea_id" jdbcType="CHAR" property="teaId"/>
-        <result column="tea_name" jdbcType="CHAR" property="teaName"/>
-        <result column="tea_pwd" jdbcType="VARCHAR" property="teaPwd"/>
+        <id column="id" property="id"/>
+        <result column="tea_id" property="teaId"/>
+        <result column="tea_name" property="teaName"/>
+        <result column="tea_pwd" property="teaPwd"/>
+        <result column="createdDate" property="createdDate"/>
+        <result column="updatedDate" property="updatedDate"/>
+        <result column="delete_flag" property="deleteFlag"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-    tea_id, tea_name, tea_pwd
-  </sql>
+    id,tea_id, tea_name, tea_pwd,createdDate,updatedDate,delete_flag
+    </sql>
 
     <select id="selectByTeaId" resultMap="TeacherMap">
         SELECT
@@ -37,11 +41,12 @@
    </delete>
 
     <insert id="insert">
-    INSERT  INTO teacher (tea_id, tea_name, tea_pwd)
+    INSERT  INTO teacher (tea_id, tea_name, tea_pwd,createdDate)
     values
-    (#{teaId,jdbcType=CHAR},
-    #{teaName,jdbcType=CHAR},
-    #{teaPwd,jdbcType=VARCHAR}
+    (#{teaId},
+    #{teaName},
+    #{teaPwd},
+      now()
     )
   </insert>
 
@@ -75,20 +80,22 @@
         UPDATE teacher
         <set>
             <if test="teaName != null">
-                tea_name = #{teaName,jdbcType=CHAR},
+                tea_name = #{teaName},
             </if>
             <if test="teaPwd != null">
-                tea_pwd = #{teaPwd,jdbcType=VARCHAR},
+                tea_pwd = #{teaPwd},
             </if>
+            updatedDate=now()
         </set>
-        WHERE tea_id = #{teaId,jdbcType=CHAR}
+        WHERE tea_id = #{teaId}
     </update>
 
     <update id="updateByTeaId">
     UPDATE teacher
-    SET    tea_name = #{teaName,jdbcType=CHAR},
-           tea_pwd = #{teaPwd,jdbcType=VARCHAR}
-    WHERE  tea_id = #{teaId,jdbcType=CHAR}
+    SET    tea_name = #{teaName},
+            tea_pwd = #{teaPwd},
+            updatedDate=now()
+    WHERE  tea_id = #{teaId}
   </update>
 
 </mapper>

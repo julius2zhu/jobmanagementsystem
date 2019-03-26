@@ -18,13 +18,13 @@ public class TaskServiceImpl implements TaskService {
 		return taskDao.insert(task);
 	}
 
-	public Integer deleteTaskById(Long id) {
+	public Integer deleteTaskById(Long id)
+    {
 		return taskDao.deleteTaskById(id);
 	}
 
 	// 暂未实现 
 	public int deleteAll() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
@@ -66,7 +66,6 @@ public class TaskServiceImpl implements TaskService {
 
 	@Override
 	public Task findTaskByTaskName(String taskName) throws Exception {
-		// TODO Auto-generated method stub
 		return taskDao.selectByTaskName(taskName);
 	}
 

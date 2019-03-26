@@ -75,7 +75,7 @@ public interface ResultService {
      * @param taskId
      * @return
      */
-    Result findResult(String stuId, Integer taskId) throws Exception;
+    Result findResult(String stuId, Integer taskId);
 
 
     /**

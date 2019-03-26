@@ -3,9 +3,11 @@ package com.julius.jobmanagementsystem.domain.entity;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 @Setter
 @Getter
-public class Teacher {
+public  final  class Teacher extends BaseDomain implements Serializable {
     private Long id;
     //	教师ID
     private String teaId;

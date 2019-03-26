@@ -3,16 +3,21 @@
 <mapper namespace="com.julius.jobmanagementsystem.domain.repository.TaskDao">
 
     <resultMap id="TaskMap" type="Task">
-        <id column="task_id" jdbcType="INTEGER" property="taskId"/>
-        <result column="task_name" jdbcType="VARCHAR" property="taskName"/>
-        <result column="task_download_name" jdbcType="VARCHAR" property="taskDownloadName"/>
-        <result column="task_rule" jdbcType="VARCHAR" property="taskRule"/>
-        <result column="task_expiry" jdbcType="TIMESTAMP" property="taskExpiry"/>
-        <result column="task_minsize" jdbcType="INTEGER" property="taskMinsize"/>
+        <id column="id" property="id"/>
+        <result column="task_id" property="taskId"/>
+        <result column="task_name" property="taskName"/>
+        <result column="task_download_name" property="taskDownloadName"/>
+        <result column="task_rule" property="taskRule"/>
+        <result column="task_expiry" property="taskExpiry"/>
+        <result column="task_minsize" property="taskMinsize"/>
+        <result column="createdDate" property="createdDate"/>
+        <result column="updatedDate" property="updatedDate"/>
+        <result column="delete_flag" property="deleteFlag"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-    id,task_id, task_name, task_download_name,task_rule,task_expiry,task_minsize
+    id,task_id, task_name, task_download_name,task_rule,
+    task_expiry,task_minsize,createdDate,updatedDate,delete_flag
     </sql>
 
     <select id="selectByTaskId" resultMap="TaskMap">
@@ -48,28 +53,31 @@
 	  r.task_id AS taskId,
 	  t.task_name AS taskName
      FROM
-	  result r
-      RIGHT  JOIN task t ON r.task_id = t.task_id
-      WHERE
-	r.stu_id =#{studentId}
+	 result r
+    RIGHT  JOIN task t ON r.task_id = t.task_id
+    WHERE
+	r.stu_id =#{studentId}  AND  t.delete_flag='1'
     </select>
 
     <delete id="deleteTaskById">
-        UPDATE  task SET delete_flag='0'
+        UPDATE  task
+        SET delete_flag='0',
+        updatedDate=now()
         WHERE   id=#{id}
     </delete>
 
     <insert id="insert">
       INSERT INTO task
        (task_id, task_name, task_download_name,
-       task_rule, task_expiry, task_minsize)
+       task_rule, task_expiry, task_minsize,createdDate)
       VALUES (
        #{taskId},
        #{taskName},
        #{taskDownloadName},
        #{taskRule},
        #{taskExpiry},
-       #{taskMinsize}
+       #{taskMinsize},
+       now()
        )
    </insert>
 
@@ -135,6 +143,7 @@
             <if test="taskMinsize != null">
                 task_minsize = #{taskMinsize,jdbcType=INTEGER},
             </if>
+            updatedDate=now()
         </set>
         WHERE task_id = #{taskId,jdbcType=INTEGER}
     </update>
@@ -145,7 +154,8 @@
       task_path = #{taskPath},
       task_rule = #{taskRule},
       task_expiry = #{taskExpiry},
-      task_minsize = #{taskMinsize}
+      task_minsize = #{taskMinsize},
+      updatedDate=now()
     WHERE task_id = #{taskId}
   </update>
 </mapper>

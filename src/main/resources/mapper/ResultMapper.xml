@@ -2,15 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.julius.jobmanagementsystem.domain.repository.ResultDao">
 
+    <!--结果集映射-->
     <resultMap id="ResultMap" type="Result">
-        <id column="stu_id" property="stuId"/>
-        <id column="task_id" property="taskId"/>
+        <id column="id" property="id"/>
+        <result column="stu_id" property="stuId"/>
+        <result column="task_id" property="taskId"/>
         <result column="submit" property="submit"/>
         <result column="score" property="score"/>
+        <result column="createdDate" property="createdDate"/>
+        <result column="updatedDate" property="updatedDate"/>
+        <result column="delete_flag" property="deleteFlag"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-     stu_id, task_id, submit, score
+     id,stu_id, task_id, submit, score,createdDate,updatedDate,delete_flag
   </sql>
 
     <select id="selectByPrimaryKey" resultMap="ResultMap">
@@ -64,7 +69,7 @@
     </select>
 
     <select id="findTaskIsSubmit" resultType="java.lang.Integer">
-        SELECT COUNT(*)  FROM result
+        SELECT COUNT(*) FROM result
         <where>
             AND stu_id=#{studentId}
             AND task_id=#{taskId} AND submit='1'
@@ -76,10 +81,12 @@
      WHERE        stu_id = #{stuId}
      AND          task_id = #{taskId}
   </delete>
+
     <delete id="deleteByStuId">
     DELETE FROM result
     WHERE       stu_id = #{stuId}
   </delete>
+
     <delete id="deleteByTaskId">
     DELETE  FROM result
     WHERE   task_id = #{taskId}
@@ -87,9 +94,9 @@
 
     <insert id="insert">
     INSERT INTO result
-        (stu_id, task_id, submit, score)
+        (stu_id, task_id, submit, score,createdDate)
     VALUES
-        (#{stuId}, #{taskId}, #{submit}, #{score})
+        (#{stuId}, #{taskId}, #{submit}, #{score},now())
   </insert>
 
     <insert id="insertSelective">
@@ -132,16 +139,18 @@
             <if test="score != null">
                 score = #{score},
             </if>
+            updatedDate=now()
         </set>
         WHERE stu_id = #{stuId}
         AND task_id = #{taskId}
     </update>
 
     <update id="updateByPrimaryKey">
-    UPDATE  result
-    SET     submit = #{submit},
-            score = #{score}
-    WHERE   stu_id = #{stuId}
-    AND     task_id = #{taskId}
+    UPDATE   result
+    SET      submit = #{submit},
+              score = #{score},
+              updatedDate=now()
+    WHERE    stu_id = #{stuId}
+    AND      task_id = #{taskId}
   </update>
 </mapper>

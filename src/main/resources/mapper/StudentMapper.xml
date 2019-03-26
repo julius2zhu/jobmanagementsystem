@@ -3,14 +3,18 @@
 <mapper namespace="com.julius.jobmanagementsystem.domain.repository.StudentDao">
 
     <resultMap id="StudentMap" type="Student">
-        <id column="stu_id" jdbcType="CHAR" property="stuId"/>
-        <result column="stu_name" jdbcType="VARCHAR" property="stuName"/>
-        <result column="stu_pwd" jdbcType="VARCHAR" property="stuPwd"/>
+        <id column="id" property="id"/>
+        <result column="stu_id" property="stuId"/>
+        <result column="stu_name" property="stuName"/>
+        <result column="stu_pwd" property="stuPwd"/>
+        <result column="createdDate" property="createdDate"/>
+        <result column="updatedDate" property="updatedDate"/>
+        <result column="delete_flag" property="deleteFlag"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-    stu_id, stu_name, stu_pwd
-  </sql>
+    id,stu_id, stu_name, stu_pwd,createdDate,updatedDate,delete_flag
+   </sql>
 
     <select id="selectByStuId" resultMap="StudentMap">
         SELECT
@@ -32,9 +36,9 @@
     </select>
 
     <delete id="deleteByStuId">
-    DELETE  FROM student
-    WHERE        stu_id = #{stuId,jdbcType=CHAR}
-   </delete>
+     DELETE  FROM student
+     WHERE        stu_id = #{stuId,jdbcType=CHAR}
+    </delete>
 
     <delete id="deleteBatch">
         DELETE FROM student
@@ -46,10 +50,10 @@
 
     <insert id="insert">
     INSERT INTO student
-    (stu_id, stu_name, stu_pwd)
+    (stu_id, stu_name, stu_pwd,createdDate)
     VALUES
-    (#{stuId,jdbcType=CHAR}, #{stuName,jdbcType=VARCHAR}, #{stuPwd,jdbcType=VARCHAR})
-  </insert>
+    (#{stuId}, #{stuName}, #{stuPwd},now())
+   </insert>
 
     <insert id="insertBatch">
         INSERT INTO student
@@ -58,7 +62,6 @@
         <foreach collection="list" item="item" index="index" separator=",">
             (#{item.stuId},#{item.stuName},#{item.stuPwd})
         </foreach>
-
     </insert>
 
     <insert id="insertSelective">
@@ -88,8 +91,8 @@
     </insert>
 
     <insert id="register">
-        INSERT  INTO student(stu_id,stu_name,stu_pwd)
-        VALUES  (#{stuId},#{stuName},#{stuPwd})
+        INSERT  INTO  student(stu_id,stu_name,stu_pwd,createdDate)
+        VALUES  (#{stuId},#{stuName},#{stuPwd},now())
     </insert>
 
     <update id="updateByStuIdSelective">
@@ -106,9 +109,10 @@
     </update>
 
     <update id="updateByStuId">
-      update   student
-      SET      stu_name = #{stuName},
-               stu_pwd = #{stuPwd}
+      update    student
+      SET       stu_name = #{stuName},
+                stu_pwd = #{stuPwd},
+                updatedDate=now()
       WHERE    stu_id = #{stuId}
   </update>
 </mapper>
