@@ -16,6 +16,12 @@ import java.util.Date;
 public class BaseDomain {
     //主键id
     private Long id;
+    //当前页
+    private Integer currentPage;
+    //总页数
+    private Integer totalPage;
+    //每页显示的条数
+    private Integer pageSize;
     //创建日期
     private Date createdDate;
     //更新日期

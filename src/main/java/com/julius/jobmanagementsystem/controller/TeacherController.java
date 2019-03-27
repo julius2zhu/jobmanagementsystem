@@ -2,7 +2,6 @@ package com.julius.jobmanagementsystem.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.julius.jobmanagementsystem.domain.entity.Result;
-import com.julius.jobmanagementsystem.domain.entity.Student;
 import com.julius.jobmanagementsystem.domain.entity.Task;
 import com.julius.jobmanagementsystem.service.ResultService;
 import com.julius.jobmanagementsystem.service.StudentService;
@@ -56,7 +55,7 @@ public class TeacherController {
         List<Task> tasks = taskService.findAllTasks();
         model.addAttribute("taskList", tasks);
         model.addAttribute("resultList", results);
-
+        model.addAttribute("taskId", taskId);
         return "/queryResult";
     }
 

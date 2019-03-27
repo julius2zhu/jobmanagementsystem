@@ -61,16 +61,22 @@ public class ResultServiceImpl implements ResultService {
     }
 
     public List<Result> findResultByTaskId(Integer taskId, Integer currentPage) {
+        //默认每次展示十条数据
+        Integer pageSize = 10;
         //分页操作,当前页和每页显示的数据
         if (currentPage == null) {
             currentPage = 1;
         } else {
             currentPage++;
         }
-        PageHelper.startPage(currentPage, 10);
+        PageHelper.startPage(currentPage, pageSize);
         PageInfo pageInfo = new PageInfo(resultDao.findResultByTaskId(taskId));
         List<Result> results = pageInfo.getList();
-        System.out.println(results.size());
+        if (results != null) {
+            results.get(0).setCurrentPage(currentPage);
+            results.get(0).setTotalPage(pageInfo.getPages());
+            results.get(0).setPageSize(pageInfo.getSize());
+        }
         return results;
     }
 

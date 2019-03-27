@@ -45,7 +45,7 @@
             </ul>
         </div>
 
-        <table class="table table-hover text-center" data-task="${taskId})">
+        <table class="table table-hover text-center" data-task="${taskId}">
             <tr>
                 <th>序号</th>
                 <th>学生学号</th>
@@ -60,16 +60,20 @@
                     <td>${status.count}</td>
                     <td>${result.stuId}</td>
                     <td>${result.studentName}</td>
-                    <td align="center"><input
+                    <td align="center">
+                        <input
                             style="width: 60px; border: 0px; background-color: white; cursor: text; text-align: center;"
                             class="input-big" type="text" readonly="readonly"
-                            value="${result.score}" onblur="blurListen(value);"/> <a class="u_edit border-main"
-                                                                                     href="javascript:;"><span
-                            class="icon-edit text-big"></span></a>
+                            value="${result.score}" onblur="blurListen(value);"/>
+                        <a class="u_edit border-main" href="javascript:;">
+                            <span class="icon-edit text-big"></span>
+                        </a>
+
                         <a class="u_save border-green" style="display: none;"
-                           href="javascript:;"> <span
-                                class="icon-check-square-o text-big"></span>
-                        </a></td>
+                           href="javascript:;">
+                            <span class="icon-check-square-o text-big"></span>
+                        </a>
+                    </td>
                     <c:if test="${result.submit== false}">
                         <td>否</td>
                         <td>
@@ -92,23 +96,23 @@
                 </tr>
             </c:forEach>
 
-
             <tr>
                 <td colspan="8">
                     <div class="pagelist">
                         <a href="query?taskId=${taskId}&curPage=1">首页</a> <a
-                            href="query?taskId=${taskId}&curPage=${curPage-1}">上一页</a>
-                        <c:forEach begin="1" step="1" varStatus="status"
-                                   end="${totalPage}">
+                            href="query?taskId=${taskId}&curPage=${-1}">上一页</a>
+                        <c:forEach items="${resultList}" var="result" begin="1" step="1" varStatus="status"
+                                   end="${result.totalPage}">
                             <c:if test="${curPage==status.count}">
                                 <span class="current">${curPage}</span>
                             </c:if>
-                            <c:if test="${curPage!=status.count}">
+                            <c:if test="${status.count}">
                                 <a href="query?taskId=${taskId}&curPage=${status.count}">${status.count}</a>
                             </c:if>
                         </c:forEach>
-                        <a href="query?taskId=${taskId}&curPage=${curPage+1}">下一页</a> <a
-                            href="query?taskId=${taskId}&curPage=${totalPage}">尾页</a>
+                        <span>222</span>
+                        <a href="query?${result}">下一页</a> <a
+                            href="query?taskId=${result}">尾页</a>
                     </div>
                 </td>
             </tr>
