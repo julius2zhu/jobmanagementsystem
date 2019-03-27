@@ -7,6 +7,8 @@
         <id column="id" property="id"/>
         <result column="stu_id" property="stuId"/>
         <result column="task_id" property="taskId"/>
+        <result column="stu_name" property="studentName"/>
+        <result column="task_download_name" property="taskDownLoadName"/>
         <result column="submit" property="submit"/>
         <result column="score" property="score"/>
         <result column="createdDate" property="createdDate"/>
@@ -16,7 +18,23 @@
 
     <sql id="Base_Column_List">
      id,stu_id, task_id, submit, score,createdDate,updatedDate,delete_flag
-  </sql>
+    </sql>
+
+    <select id="findResultByTaskId" resultMap="ResultMap">
+       SELECT
+	   r.score,
+	   r.submit,
+	   s.stu_id,
+	   s.stu_name,
+	   t.task_id,
+	   t.task_name,
+	   t.task_download_name
+      FROM
+	  result r
+      LEFT JOIN student s ON r.stu_id = s.stu_id
+      LEFT JOIN task    t ON  r.task_id=t.task_id
+      WHERE r.task_id=#{taskId} AND  t.delete_flag='1'  AND r.delete_flag='1'
+    </select>
 
     <select id="selectByPrimaryKey" resultMap="ResultMap">
         SELECT
@@ -75,6 +93,10 @@
             AND task_id=#{taskId} AND submit='1'
         </where>
     </select>
+    <select id="findResultStudentById" resultType="java.lang.Integer">
+         SELECT    COUNT(*) FROM  result
+         WHERE     stu_id=#{studentId} AND  task_id=#{taskId}   AND delete_flag='1'
+    </select>
 
     <delete id="deleteByPrimaryKey">
      DELETE FROM  result
@@ -93,10 +115,10 @@
   </delete>
 
     <insert id="insert">
-    INSERT INTO result
-        (stu_id, task_id, submit, score,createdDate)
+    INSERT INTO   result
+        (stu_id, task_id,createdDate)
     VALUES
-        (#{stuId}, #{taskId}, #{submit}, #{score},now())
+        (#{stuId}, #{taskId},now())
   </insert>
 
     <insert id="insertSelective">

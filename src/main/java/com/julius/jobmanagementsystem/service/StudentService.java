@@ -85,7 +85,7 @@ public interface StudentService {
      *
      * @return
      */
-    List<Student> findAllStudent() throws Exception;
+    List<Student> findAllStudent();
 
     /**
      * 判断登录是否成功，成功返回1，否则返回0,id不存在返回-1

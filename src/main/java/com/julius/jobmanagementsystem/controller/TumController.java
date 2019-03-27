@@ -22,14 +22,17 @@ public class TumController {
     private TaskService taskService;
     @Autowired
     private ResultService resultService;
+
     @RequestMapping("/addjob")
     public String tumAddjob() {
         return "/addjob";
     }
+
     @RequestMapping("/addStudent")
     public String tumAddStudent() {
         return "/addStudent";
     }
+
     @RequestMapping("/exportResult")
     public String tumExportResult(Model model) {
         List<Task> taskList = new ArrayList<Task>();
@@ -98,9 +101,15 @@ public class TumController {
         return "/personResult";
     }
 
+    /**
+     * 查询作业信息
+     *
+     * @param model 模型共享数据
+     * @return 跳转页面
+     */
     @RequestMapping("/queryResult")
     public String tumQueryResult(Model model) {
-        List<Task> list = new ArrayList<Task>();
+        List<Task> list = new ArrayList<>();
         try {
             list = taskService.findAllTasks();
         } catch (Exception e) {

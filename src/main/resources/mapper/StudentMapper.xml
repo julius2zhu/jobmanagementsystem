@@ -35,6 +35,13 @@
         </where>
     </select>
 
+    <select id="findAllStudent" resultMap="StudentMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM  student
+        WHERE delete_flag='1'
+    </select>
+
     <delete id="deleteByStuId">
      DELETE  FROM student
      WHERE        stu_id = #{stuId,jdbcType=CHAR}

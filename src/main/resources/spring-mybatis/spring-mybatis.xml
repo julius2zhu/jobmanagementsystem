@@ -25,6 +25,19 @@
 		<property name="typeAliasesPackage" value="com.julius.jobmanagementsystem.domain.entity"/>
 		<!-- 注册mapper.xm -->
 		<property name="mapperLocations" value="classpath*:/mapper/*.xml"/>
+		<!-- pageHelper插件 -->
+		<property name="plugins">
+			<array>
+				<bean class="com.github.pagehelper.PageInterceptor">
+					<property name="properties">
+						<!--使用下面的方式配置参数，一行配置一个 -->
+						<value>
+							params=value1
+						</value>
+					</property>
+				</bean>
+			</array>
+		</property>
 	</bean>
 	<!-- DAO接口所在包名，Spring会自动查找其下的类 -->
 	<bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">

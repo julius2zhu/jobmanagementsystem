@@ -12,10 +12,10 @@ public interface ResultDao {
     /**
      * 向成绩表插入数据
      *
-     * @param result
-     * @return
+     * @param result 实体对象
+     * @return 受影响的行数
      */
-    int insert(Result result);
+    Integer  insert(Result result);
 
     /**
      * 有选择插入成绩表
@@ -112,7 +112,25 @@ public interface ResultDao {
      *
      * @param studentId 学生id
      * @param taskId    作业id
-     * @return   记录数
+     * @return 记录数
      */
     Integer findTaskIsSubmit(@Param("studentId") Integer studentId, @Param("taskId") Integer taskId);
+
+    /**
+     * 根据作业id查询学生的成绩信息
+     *
+     * @param taskId 作业id
+     * @return Result实体对象集合
+     */
+    List<Result> findResultByTaskId(Integer taskId);
+
+    /**
+     * 根据学生id和作业id去判断是否存在该记录
+     *
+     * @param studentId 学生id
+     * @param taskId    作业id
+     * @return 记录数
+     */
+    Integer findResultStudentById(@Param("studentId") String studentId,
+                                  @Param("taskId") Integer taskId);
 }

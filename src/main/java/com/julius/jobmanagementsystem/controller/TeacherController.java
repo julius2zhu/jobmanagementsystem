@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
@@ -40,52 +41,22 @@ public class TeacherController {
     @Autowired
     private TaskService taskService;
 
+    /**
+     * 根据作业号查询学生作业提交情况
+     *
+     * @param taskId      作业号
+     * @param currentPage 当前页
+     * @param model       共享数据模型对象
+     * @return 跳转页面
+     */
     @RequestMapping("/query")
-    public String queryResult(Integer taskId, Integer curPage, Model model) {
-        Integer pageSize = 30;
-        Integer total = 0;
-        try {
-            total = resultService.findResultByTaskId(taskId).size();
-        } catch (Exception e) {
-            model.addAttribute("flag", false);
-            System.out.println("error!!!!!" + taskId);
-            return "/queryResult";
-        }
-        Integer totalPage = (total % pageSize) == 0 ? total / pageSize : (total / pageSize) + 1;
-        if (curPage == null || curPage <= 1)
-            curPage = 1;
-        if (curPage > totalPage)
-            curPage = totalPage;
-        System.out.println("curOpage" + curPage);
-        List<Result> list = new ArrayList<Result>();
-        List<String> stuNameList = new ArrayList<String>();
-        System.out.println("taskId" + taskId);
-        try {
-            list = resultService.findResultByTaskId(taskId, (curPage - 1) * pageSize, pageSize);
-            for (Result result : list) {
-                String stuId = result.getStuId();
-                Student stu = new Student();
-                stu = studentService.findStudentInfoByStuId(stuId);
-                stuNameList.add(stu.getStuName());
-            }
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        List<Task> taskList = new ArrayList<Task>();
-        try {
-            taskList = taskService.findAllTasks();
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            list = null;
-            e.printStackTrace();
-        }
-        model.addAttribute("taskList", taskList);
-        model.addAttribute("resultList", list);
-        model.addAttribute("stuNameList", stuNameList);
-        model.addAttribute("totalPage", totalPage);
-        model.addAttribute("curPage", curPage);
-        model.addAttribute("taskId", taskId);
+    public String queryResult(Integer taskId, Integer currentPage, Model model) {
+
+        List<Result> results = resultService.findResultByTaskId(taskId, currentPage);
+        List<Task> tasks = taskService.findAllTasks();
+        model.addAttribute("taskList", tasks);
+        model.addAttribute("resultList", results);
+
         return "/queryResult";
     }
 
@@ -101,7 +72,6 @@ public class TeacherController {
         int flag = 0;
         try {
             flag = resultService.updateResult(result);
-
         } catch (Exception e) {
             flag = 0;
             e.printStackTrace();
@@ -244,39 +214,9 @@ public class TeacherController {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-
-            // 在result中添加记录，作业和所有的学生
-            // 获取当前的所有学生ID
-            List<Student> students = new ArrayList<Student>();
-            try {
-                students = studentService.findAllStudent();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            // 获取作业ID
-            try {
-                task = taskService.findTaskByTaskName(taskName);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            for (Student student : students) {
-                Result result = new Result();
-                result.setStuId(student.getStuId());
-                result.setTaskId(task.getTaskId());
-                try {
-                    resultService.addResult(result);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+            //更新result表,推送给所有学生
+            Integer result = resultService.pushAllStudent(taskId);
         }
-        // 开起线程到规定时间后开启自动评分
-//        Task task = Common.getTaskByName(taskName, taskService);
-//        //获取评分类对象
-//        Rating rate = new Rating(task.getTaskName(), task.getTaskId());
-//        //开启自动评分线程
-//        new Thread(new AutoCheckThread(rate, task.getTaskExpiry(), resultService), task.getTaskName()).start();
         return "redirect:/managejob";
     }
 

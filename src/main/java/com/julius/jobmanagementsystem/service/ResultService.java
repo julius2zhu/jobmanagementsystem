@@ -63,10 +63,11 @@ public interface ResultService {
     /**
      * 根据作业号查询该作业所有学生的成绩
      *
-     * @param taskId
-     * @return
+     * @param taskId      作业号id
+     * @param currentPage 当前页
+     * @return 符合条件的结果集
      */
-    List<Result> findResultByTaskId(Integer taskId, Integer... pageInfo) throws Exception;
+    List<Result> findResultByTaskId(Integer taskId, Integer currentPage);
 
     /**
      * 根据学生学号和作业号查询该学生该作业的成绩
@@ -86,4 +87,12 @@ public interface ResultService {
      * @return 记录数
      */
     Integer findTaskIsSubmit(Integer studentId, Integer taskId);
+
+    /**
+     * 推送老师发布作业给所有学生
+     *
+     * @param taskId 作业id
+     * @return 受影响的行数
+     */
+    Integer pushAllStudent(Integer taskId);
 }

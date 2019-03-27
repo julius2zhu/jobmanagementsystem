@@ -14,6 +14,10 @@ public class TaskServiceImpl implements TaskService {
 	@Autowired
 	private TaskDao taskDao;
 
+	public List<Task> findAllTasks() {
+		return taskDao.findAllTasks();
+	}
+
 	public int addTask(Task task) {
 		return taskDao.insert(task);
 	}
@@ -53,10 +57,6 @@ public class TaskServiceImpl implements TaskService {
 
 	public Task findTaskByTaskId(Integer taskId) {
 		return taskDao.selectByTaskId(taskId);
-	}
-
-	public List<Task> findAllTasks() {
-		return taskDao.findAllTasks();
 	}
 
 	@Override

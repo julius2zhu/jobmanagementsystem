@@ -82,8 +82,16 @@ public interface StudentDao {
 
     /**
      * app端学生注册
+     *
      * @param student 学生信息实体
      * @return 受影响的行数
      */
     Integer register(Student student);
+
+    /**
+     * 查询所有学生信息
+     *
+     * @return 学生信息对象集合
+     */
+    List<Student> findAllStudent();
 }

@@ -66,8 +66,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     public List<Student> findAllStudent() {
-        // TODO Auto-generated method stub
-        return studentDao.selectAllStu();
+        return studentDao.findAllStudent();
     }
 
     public Integer login(String stuId, String pwd) {
