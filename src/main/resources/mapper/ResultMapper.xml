@@ -95,7 +95,7 @@
     </select>
     <select id="findResultStudentById" resultType="java.lang.Integer">
          SELECT    COUNT(*) FROM  result
-         WHERE     stu_id=#{studentId} AND  task_id=#{taskId}   AND delete_flag='1'
+         WHERE     stu_id=#{studentId}  AND  task_id=#{taskId}   AND delete_flag='1'
     </select>
 
     <delete id="deleteByPrimaryKey">

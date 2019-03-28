@@ -118,6 +118,10 @@ public class ResultServiceImpl implements ResultService {
         }
         //批量插入
         batchInsert.batchInsert(results);
+        sqlSession.commit();
+        if (sqlSession != null) {
+            sqlSession.close();
+        }
         return null;
     }
 }
