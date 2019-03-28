@@ -62,9 +62,9 @@
                     <td>${result.studentName}</td>
                     <td align="center">
                         <input
-                            style="width: 60px; border: 0px; background-color: white; cursor: text; text-align: center;"
-                            class="input-big" type="text" readonly="readonly"
-                            value="${result.score}" onblur="blurListen(value);"/>
+                                style="width: 60px; border: 0px; background-color: white; cursor: text; text-align: center;"
+                                class="input-big" type="text" readonly="readonly"
+                                value="${result.score}" onblur="blurListen(value);"/>
                         <a class="u_edit border-main" href="javascript:;">
                             <span class="icon-edit text-big"></span>
                         </a>
@@ -99,20 +99,20 @@
             <tr>
                 <td colspan="8">
                     <div class="pagelist">
-                        <a href="query?taskId=${taskId}&curPage=1">首页</a> <a
-                            href="query?taskId=${taskId}&curPage=${-1}">上一页</a>
-                        <c:forEach items="${resultList}" var="result" begin="1" step="1" varStatus="status"
-                                   end="${result.totalPage}">
-                            <c:if test="${curPage==status.count}">
-                                <span class="current">${curPage}</span>
-                            </c:if>
-                            <c:if test="${status.count}">
-                                <a href="query?taskId=${taskId}&curPage=${status.count}">${status.count}</a>
-                            </c:if>
-                        </c:forEach>
-                        <span>222</span>
-                        <a href="query?${result}">下一页</a> <a
-                            href="query?taskId=${result}">尾页</a>
+                        <a href="query?taskId=${taskId}&currentPage=1">首页</a> <a
+                            href="query?taskId=${taskId}&currentPage=${currentPage-1}">上一页</a>
+                        <span>
+                          <c:choose>
+                              <c:when test="${currentPage!=null}">
+                                  ${currentPage}
+                              </c:when>
+                              <c:otherwise>
+                                  1
+                              </c:otherwise>
+                          </c:choose>
+                        </span>
+                        <a href="query?taskId=${taskId}&currentPage=${currentPage+1}">下一页</a> <a
+                            href="query?taskId=${taskId}&currentPage=${totalPage}">尾页</a>
                     </div>
                 </td>
             </tr>

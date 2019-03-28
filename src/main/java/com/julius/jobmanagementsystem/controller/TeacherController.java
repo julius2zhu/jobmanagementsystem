@@ -6,6 +6,7 @@ import com.julius.jobmanagementsystem.domain.entity.Task;
 import com.julius.jobmanagementsystem.service.ResultService;
 import com.julius.jobmanagementsystem.service.StudentService;
 import com.julius.jobmanagementsystem.service.TaskService;
+import com.julius.jobmanagementsystem.utils.Common;
 import com.julius.jobmanagementsystem.utils.Config;
 import com.julius.jobmanagementsystem.utils.FileUtils;
 import com.julius.jobmanagementsystem.utils.UploadUtils;
@@ -50,11 +51,38 @@ public class TeacherController {
      */
     @RequestMapping("/query")
     public String queryResult(Integer taskId, Integer currentPage, Model model) {
-
-        List<Result> results = resultService.findResultByTaskId(taskId, currentPage);
+        Integer totalPage = 1;
+        Integer pageSize = 10;
+        //当前页不能为负数
+        if (currentPage == null || currentPage < 1) {
+            currentPage = 1;
+        }
+        //查询所有作业信息
         List<Task> tasks = taskService.findAllTasks();
+        //根据作业id查询作业的分页信息
+        List<Result> results = resultService.findResultByTaskId(taskId, currentPage);
+        //传递的当前页可以查询到数据
+        if (results.size() > 0) {
+            currentPage = results.get(0).getCurrentPage();
+            totalPage = results.get(0).getTotalPage();
+            pageSize = results.get(0).getPageSize();
+        } else {
+            //当前页没有数据,已经到末页,直接返回上一页去查询
+            currentPage--;
+            results = resultService.findResultByTaskId(taskId, currentPage);
+            currentPage = results.get(0).getCurrentPage();
+            totalPage = results.get(0).getTotalPage();
+            pageSize = results.get(0).getPageSize();
+        }
+        //返回分页信息
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("totalPage", totalPage);
+        model.addAttribute("pageSize", pageSize);
+        //返回作业信息
         model.addAttribute("taskList", tasks);
+        //返回提交情况
         model.addAttribute("resultList", results);
+        //返回所有作业id
         model.addAttribute("taskId", taskId);
         return "/queryResult";
     }
@@ -134,37 +162,6 @@ public class TeacherController {
             UploadUtils up = new UploadUtils();
             up.uploadUtils(uploadfile, newUrl);
         }
-        //获取修改成功后的作业信息
-//        Task t = Common.getTaskByName(taskName, taskService);
-        //获取评分类对象
-//        Rating rate = new Rating(t.getTaskName(), t.getTaskId());
-        //获取当前活跃的线程信息，找到要修改的作业之前开启的线程并关闭
-        //获取当前活跃的线程组
-//        ThreadGroup group = Thread.currentThread().getThreadGroup();
-//        Thread thread = null;
-//        String threadName = oldName;
-        //找到指定名字的线程，即获取要停止运行的线程
-//        while (group != null) {
-//            Thread[] threads = new Thread[(int) (group.activeCount() * 1.2)];
-//            int count = group.enumerate(threads, true);
-//            for (int i = 0; i < count; i++) {
-//                System.out.println("线程名字：" + threads[i].getName());
-//                if (threadName.equals(threads[i].getName())) {
-//                    thread = threads[i];
-//                    break;
-//                }
-//            }
-//            group = group.getParent();
-//        }
-//        //如果要停止运行的线程存在，即仍在运行，则打断线程
-//        if (thread != null) {
-//            thread.interrupt();
-//            System.out.println(oldName + "线程已被打断");
-//        } else {
-//            System.out.println("找不到线程！！！！");
-//        }
-//        //以新的作业信息开启新线程
-//        new Thread(new AutoCheckThread(rate, t.getTaskExpiry(), resultService), t.getTaskName()).start();
         return "redirect:/managejob";
     }
 

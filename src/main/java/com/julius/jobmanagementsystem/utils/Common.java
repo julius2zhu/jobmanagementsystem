@@ -9,9 +9,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
+
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author julius
@@ -134,5 +136,47 @@ public class Common {
             }
         }
         return Boolean.TRUE;
+    }
+
+    /**
+     * 计算分页信息
+     *
+     * @param currentPage 当前页
+     * @param taskId      作业id
+     * @return 带有当前页, 总页数, 每页显示的条数以及作业信息
+     */
+    public static List<Result> countPageInfo(Integer currentPage, Integer taskId) {
+        Integer totalPage = 1;
+        Integer pageSize = 10;
+        //当前页不能为负数
+        if (currentPage == null || currentPage < 1) {
+            currentPage = 1;
+        }
+        //根据作业id查询作业的分页信息
+        List<Result> results = resultService.findResultByTaskId(taskId, currentPage);
+        //传递的当前页可以查询到数据
+        if (results.size() > 0) {
+            //拿到分页信息
+            currentPage = results.get(0).getCurrentPage();
+            totalPage = results.get(0).getTotalPage();
+            pageSize = results.get(0).getPageSize();
+            //设置分页信息
+            results.get(0).setCurrentPage(currentPage);
+            results.get(0).setPageSize(pageSize);
+            results.get(0).setTotalPage(totalPage);
+        } else {
+            //当前页没有数据,已经到末页,直接返回上一页去查询
+            currentPage--;
+            results = resultService.findResultByTaskId(taskId, currentPage);
+            //拿到分页信息
+            currentPage = results.get(0).getCurrentPage();
+            totalPage = results.get(0).getTotalPage();
+            pageSize = results.get(0).getPageSize();
+            //设置分页信息
+            results.get(0).setCurrentPage(currentPage);
+            results.get(0).setPageSize(pageSize);
+            results.get(0).setTotalPage(totalPage);
+        }
+        return results;
     }
 }

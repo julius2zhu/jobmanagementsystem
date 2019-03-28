@@ -1,5 +1,6 @@
 package com.julius.jobmanagementsystem.service.impl;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.julius.jobmanagementsystem.domain.entity.Result;
@@ -64,18 +65,13 @@ public class ResultServiceImpl implements ResultService {
         //默认每次展示十条数据
         Integer pageSize = 10;
         //分页操作,当前页和每页显示的数据
-        if (currentPage == null) {
-            currentPage = 1;
-        } else {
-            currentPage++;
-        }
-        PageHelper.startPage(currentPage, pageSize);
-        PageInfo pageInfo = new PageInfo(resultDao.findResultByTaskId(taskId));
-        List<Result> results = pageInfo.getList();
-        if (results != null) {
+        Page<Result> page = PageHelper.startPage(currentPage, pageSize);
+        List<Result> results = resultDao.findResultByTaskId(taskId);
+        //不会返回null会返回空集合
+        if (results.size() > 0) {
             results.get(0).setCurrentPage(currentPage);
-            results.get(0).setTotalPage(pageInfo.getPages());
-            results.get(0).setPageSize(pageInfo.getSize());
+            results.get(0).setTotalPage(page.getPages());
+            results.get(0).setPageSize(page.getPageSize());
         }
         return results;
     }
