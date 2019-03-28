@@ -56,15 +56,15 @@ public class ResultServiceImpl implements ResultService {
     }
 
     public List<Result> findAllResult() {
-        List<Result> list = new ArrayList<Result>();
+        List<Result> list = new ArrayList<>();
         list = resultDao.selectAll();
         return list;
     }
 
-    public List<Result> findResultByStuId(String stuId) {
-        List<Result> list = new ArrayList<Result>();
-        list = resultDao.selectByStuId(stuId);
-        return list;
+    public List<Result> findResultByStuId(Integer stuId) {
+
+         return resultDao.selectByStuId(stuId);
+
     }
 
     public List<Result> findResultByTaskId(Integer taskId, Integer currentPage) {
@@ -82,8 +82,7 @@ public class ResultServiceImpl implements ResultService {
         return results;
     }
 
-    public Result findResult(String stuId, Integer taskId) {
-
+    public Result findResult(Integer stuId, Integer taskId) {
         Result result = new Result();
         result.setStuId(stuId);
         result.setTaskId(taskId);
@@ -97,27 +96,33 @@ public class ResultServiceImpl implements ResultService {
 
     @Override
     public Integer pushAllStudent(final Integer taskId) {
+        //需要被插入的数据
+        List<Result> insertData = new ArrayList<>();
+        //查询所有学生信息
+        List<Student> studentList = studentService.findAllStudent();
+        //仅仅学生表有数据
+        if (studentList.size() > 0) {
+            for (Student student : studentList) {
+                Integer stuId = student.getStuId();
+                Result insertResult = new Result();
+                insertResult.setStuId(stuId);
+                insertResult.setTaskId(taskId);
+                insertData.add(insertResult);
+            }
+        } else {
+            //student和result表都没数据,什么都不操作
+            return -1;
+        }
         //获取一个支持批量插入的SqlSession并且自动提交事务
         SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH, true);
         BatchInsert batchInsert = sqlSession.getMapper(BatchInsert.class);
-        List<Result> results = new ArrayList<>();
-        //查询所有学生信息
-        List<Student> studentList = studentService.findAllStudent();
-        //遍历所有的学生id添加到result表中
-        for (Student student : studentList) {
-            String studentId = student.getStuId();
-            //判断若是不存在则添加
-            Integer count = resultDao.findResultStudentById(studentId, taskId);
-            if (!(count > 0)) {
-                //添加数据
-                Result result = new Result();
-                result.setStuId(studentId);
-                result.setTaskId(taskId);
-                results.add(result);
-            }
-        }
         //批量插入
-        batchInsert.batchInsert(results);
+        try {
+            batchInsert.batchInsert(insertData);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //提交事务,此处设置了自动提交事务还是没有起作用
         sqlSession.commit();
         if (sqlSession != null) {
             sqlSession.close();

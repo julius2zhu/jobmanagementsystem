@@ -20,9 +20,9 @@
     </sql>
 
     <insert id="batchInsert">
-    INSERT INTO   result
+        INSERT INTO result
         (stu_id, task_id,createdDate)
-     VALUES
+        VALUES
         <foreach collection="results" item="item" separator=",">
             (#{item.stuId},#{item.taskId},now())
         </foreach>

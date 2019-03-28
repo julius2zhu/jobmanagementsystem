@@ -50,7 +50,7 @@ public class TeacherServiceImpl implements TeacherService {
         return teacherDao.updateByTeaIdSelective(teacher);
     }
 
-    public Teacher findTeacherByTeaId(String teaId) throws Exception {
+    public Teacher findTeacherByTeaId(Integer teaId) throws Exception {
 
         return teacherDao.selectByTeaId(teaId);
     }
@@ -60,7 +60,7 @@ public class TeacherServiceImpl implements TeacherService {
         return teacherDao.selectAllTeacher();
     }
 
-    public int login(String teaId, String pwd) {
+    public int login(Integer teaId, String pwd) {
 
         try {
             if (pwd.equals(findPwdByTeaId(teaId)))
@@ -73,7 +73,7 @@ public class TeacherServiceImpl implements TeacherService {
         }
     }
 
-    public String findPwdByTeaId(String teaId) throws Exception {
+    public String findPwdByTeaId(Integer teaId) throws Exception {
 
         return teacherDao.selectByTeaId(teaId).getTeaPwd();
     }

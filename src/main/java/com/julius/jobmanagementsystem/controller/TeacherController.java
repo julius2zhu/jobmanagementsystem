@@ -92,7 +92,7 @@ public class TeacherController {
 
     @RequestMapping(value = "/updateResult", method = RequestMethod.POST)
     public void updateResult(@RequestBody JSONObject json, HttpServletResponse response) {
-        String stuId = json.getString("stuId");
+        Integer stuId = Integer.valueOf(json.getString("stuId"));
         Integer taskId = json.getInteger("taskId");
         Integer score = json.getInteger("score");
         Result result = new Result();
@@ -155,7 +155,7 @@ public class TeacherController {
         if (uploadfile[0].getSize() == 0) {//未选择上传文件,只修改文件夹名字
             flag = oldDir.renameTo(new File(newUrl, newName));
             if (flag) {
-                System.out.println("文件名修改成功");
+                LOGGER.debug("message:{}", "文件修改成功");
             }
         } else {
             //选择上传文件，删除原来的文件，新建文件并写入上传的文件
@@ -204,7 +204,7 @@ public class TeacherController {
             //文件下载名称
             task.setTaskDownloadName(uploadFiles[0].getOriginalFilename());
             // 日期转换
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd HH:mm");
             try {
                 Date date = sdf.parse(datetime);
                 task.setTaskExpiry(date);
@@ -214,7 +214,7 @@ public class TeacherController {
                 e.printStackTrace();
             }
             //更新result表,推送给所有学生
-            Integer result = resultService.pushAllStudent(taskId);
+            resultService.pushAllStudent(taskId);
         }
         return "redirect:/managejob";
     }

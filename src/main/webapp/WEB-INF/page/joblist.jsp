@@ -36,6 +36,7 @@
         </tr>
         <c:forEach items="${taskList}" var="task" varStatus="status">
             <form method="post" action="upload" onsubmit="return checkTime();" enctype="multipart/form-data">
+                <input type="hidden" name="studentId" value="${studentId}">
                 <tr>
                     <td width="120">${status.count}</td>
                     <td data-name="id" style="display: none">
@@ -51,7 +52,8 @@
                                    style="background-color: white; border: none; text-align: center; width: 100px;"
                                    name="submit" value="已提交" disabled="disabled"/></td>
                         <td align="center">
-                            <input type="file" style="text-align: center; width: 200px;" multiple="multiple" name="uploadfile"></td>
+                            <input type="file" style="text-align: center; width: 200px;" multiple="multiple"
+                                   name="uploadfile"></td>
                         <td><input disabled="disabled" type="submit" onclick="return upload();"
                                    class="button border-red" value="上传"></td>
                     </c:if>
@@ -60,9 +62,10 @@
                         <td><input type="text"
                                    style="background-color: white; border: none; text-align: center; width: 100px;"
                                    name="submit" value="未提交" disabled="disabled"/></td>
-                        <td align="center"><input type="file"
-                                                  style="text-align: center; width: 200px;" multiple="multiple"
-                                                  name="uploadfile"></td>
+                        <td align="center">
+                            <input type="file" style="text-align: center; width: 200px;" multiple="multiple"
+                                                  name="uploadfile">
+                        </td>
                         <td><input disabled="disabled" type="submit" class="button border-green" value="上传"></td>
                     </c:if>
 
@@ -84,6 +87,7 @@
 
     } */
     var taskId;
+
     function upload() {
         return confirm("作业已提交过，如存在同名文件，将会覆盖，是否继续？");
     }

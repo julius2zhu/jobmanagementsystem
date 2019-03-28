@@ -133,9 +133,9 @@ public class DownLoadServiceImpl implements DownLoadService {
         stuList = studentDao.selectAllStu();
         //遍历学生
         for (Student s : stuList) {
-            String stuId = s.getStuId();
+            Integer stuId = s.getStuId();
             //分数列表
-            List<Integer> scoreList = new ArrayList<Integer>();
+            List<Integer> scoreList = new ArrayList<>();
             for (int taskId : taskIdList) {
                 Result r = new Result();
                 r.setStuId(stuId);

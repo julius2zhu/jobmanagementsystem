@@ -12,10 +12,10 @@ public interface TaskDao {
     /**
      * 插入一条作业记录
      *
-     * @param task
-     * @return 成功插入结果数
+     * @param task  作业实体对象
+     * @return 受影响的行数
      */
-    int insert(Task task);
+    Integer insert(Task task);
 
     /**
      * 插入一条作业记录

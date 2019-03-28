@@ -54,7 +54,7 @@ public interface StudentDao {
      * @param stuId
      * @return
      */
-    Student selectByStuId(String stuId);
+    Student selectByStuId(Integer stuId);
 
     /**
      * 查询所有学生信息

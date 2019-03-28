@@ -58,7 +58,7 @@ public interface ResultService {
      * @param stuId
      * @return
      */
-    List<Result> findResultByStuId(String stuId) throws Exception;
+    List<Result> findResultByStuId(Integer stuId) throws Exception;
 
     /**
      * 根据作业号查询该作业所有学生的成绩
@@ -76,7 +76,7 @@ public interface ResultService {
      * @param taskId
      * @return
      */
-    Result findResult(String stuId, Integer taskId);
+    Result findResult(Integer stuId, Integer taskId);
 
 
     /**

@@ -9,7 +9,7 @@ import java.io.Serializable;
 @Getter
 public final class Student extends  BaseDomain implements Serializable {
     //学生ID
-    private String stuId;
+    private Integer stuId;
     //学生姓名
     private String stuName;
     //学生密码 

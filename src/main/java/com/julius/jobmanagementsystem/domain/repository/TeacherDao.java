@@ -35,7 +35,7 @@ public interface TeacherDao {
      * @param teaId
      * @return
      */
-    Teacher selectByTeaId(String teaId);
+    Teacher selectByTeaId(Integer teaId);
 
     /**
      * 查询所有教师记录 

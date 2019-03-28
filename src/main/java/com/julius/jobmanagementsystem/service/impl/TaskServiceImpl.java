@@ -46,7 +46,7 @@ public class TaskServiceImpl implements TaskService {
         return taskDao.findAllTasks();
     }
 
-    public int addTask(Task task) {
+    public Integer addTask(final  Task task) {
         return taskDao.insert(task);
     }
 

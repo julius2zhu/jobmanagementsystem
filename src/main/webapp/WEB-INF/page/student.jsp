@@ -29,7 +29,7 @@
   </ul>   
   <h2><span class="icon-pencil-square-o"></span>栏目管理</h2>
   <ul>
-    <li><a href="joblist" target="right"><span class="icon-caret-right"></span>作业列表</a></li>
+    <li><a href="joblist?studentId=${studentId}" target="right"><span class="icon-caret-right"></span>作业列表</a></li>
     <li><a href="personResult" target="right"><span class="icon-caret-right"></span>查看成绩</a></li>        
   </ul>  
 </div>

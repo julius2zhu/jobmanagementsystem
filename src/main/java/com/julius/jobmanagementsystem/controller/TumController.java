@@ -46,17 +46,10 @@ public class TumController {
     }
 
     @RequestMapping("/joblist")
-    public String tumJoblist(HttpServletRequest request, Model model) {
-        String stuName = (String) request.getSession().getAttribute("stuName");
-        String stuId = "";
-        //验证当前用户是否还在线
-        if (stuName == null) {
-            return "/joblist";
-        } else {
-            stuId = (String) request.getSession().getAttribute("id");
-        }
+    public String tumJoblist(Integer studentId, Model model) {
         List<Task> taskList = taskService.findAllTasks();
-        List<Result> resultList = getResultList(taskList, stuId);
+        List<Result> resultList = getResultList(taskList, studentId);
+        model.addAttribute("studentId", studentId);
         model.addAttribute("taskList", taskList);
         model.addAttribute("resultList", resultList);
         return "/joblist";
@@ -110,14 +103,7 @@ public class TumController {
 
     @RequestMapping("/personResult")
     public String tumpersonResult(HttpServletRequest request, Model model) {
-        String stuName = (String) request.getSession().getAttribute("stuName");
-        String stuId = "";
-        //验证当前用户是否还在线
-        if (stuName == null) {
-            return "/personResult";
-        } else {
-            stuId = (String) request.getSession().getAttribute("id");
-        }
+        Integer stuId = 0;
         //封装成一个个集合对象
         List<Task> taskList = taskService.findAllTasks();
         List<Result> resultList = getResultList(taskList, stuId);
@@ -167,7 +153,7 @@ public class TumController {
      * @param studentId 学生id
      * @return result实体对象集合
      */
-    private List<Result> getResultList(List<Task> tasks, String studentId) {
+    private List<Result> getResultList(List<Task> tasks, Integer studentId) {
         List<Result> results = new ArrayList<>();
         for (Task task : tasks) {
             Result result = new Result();

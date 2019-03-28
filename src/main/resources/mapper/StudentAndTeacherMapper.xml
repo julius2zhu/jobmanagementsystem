@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.julius.jobmanagementsystem.domain.repository.StudentAndTeacherRelationServiceDao">
+    <!--结果集映射-->
+    <resultMap id="basetResult" type="StudentAndTeacherRelation">
+        <id column="id" property="id"/>
+        <result column="stu_id" property="studentId"/>
+        <result column="teacher_id" property="teacherId"/>
+        <result column="createdDate" property="createdDate"/>
+        <result column="updatedDate" property="updatedDate"/>
+        <result column="delete_flag" property="deleteFlag"/>
+    </resultMap>
+
+    <sql id="baseSQL">
+        id,student_id,teacher_id,createdDate,updatedDate,delete_flag
+    </sql>
+
+    <delete id="deleteTeacherById">
+       UPDATE  student_teacher_relation
+       SET     delete_flag='0'
+       WHERE   teacher_id=#{teacherId}
+    </delete>
+
+    <delete id="deleteStudentById">
+       UPDATE  student_teacher_relation
+       SET     delete_flag='0'
+       WHERE   student_id=#{studentId}
+    </delete>
+
+    <select id="selectAll" resultMap="basetResult">
+        SELECT
+        <include refid="baseSQL"/>
+        FROM student_teacher_relation
+    </select>
+
+    <select id="selectByTeacherId" resultMap="basetResult">
+        SELECT
+        <include refid="baseSQL"/>
+        FROM student_teacher_relation
+        <where>
+            teacher_id=#{teacherId}
+        </where>
+    </select>
+
+    <select id="selectByStudentId" resultType="StudentAndTeacherRelation">
+        SELECT
+        <include refid="baseSQL"/>
+        FROM student_teacher_relation
+        <where>
+            student_id=#{studentId}
+        </where>
+    </select>
+
+</mapper>

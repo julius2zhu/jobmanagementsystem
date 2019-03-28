@@ -51,10 +51,10 @@ public interface TaskService {
     /**
      * 添加作业
      *
-     * @param task
-     * @return
+     * @param task 作业实体类
+     * @return  受影响的行数
      */
-    int addTask(Task task);
+    Integer addTask(Task task);
 
     /**
      * 根据作业id删除作业

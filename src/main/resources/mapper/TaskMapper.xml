@@ -83,7 +83,7 @@
        #{taskRule},
        #{taskExpiry},
        #{taskMinsize},
-       now()
+          now()
        )
    </insert>
 

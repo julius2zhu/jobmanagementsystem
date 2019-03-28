@@ -15,7 +15,7 @@ public interface ResultDao {
      * @param result 实体对象
      * @return 受影响的行数
      */
-    Integer  insert(Result result);
+    Integer insert(Result result);
 
     /**
      * 有选择插入成绩表
@@ -63,7 +63,7 @@ public interface ResultDao {
      * @param stuId
      * @return
      */
-    List<Result> selectByStuId(String stuId);
+    List<Result> selectByStuId(Integer stuId);
 
     /**
      * 通过主键taskId查找成绩
@@ -84,9 +84,9 @@ public interface ResultDao {
     List<Result> selectTaskByPage(@Param("taskId") Integer taskId, @Param("begin") Integer begin, @Param("size") Integer size);
 
     /**
-     * 查询所有人的所有成绩
+     * 查询所有的记录
      *
-     * @return
+     * @return result对象集合
      */
     List<Result> selectAll();
 
@@ -131,11 +131,12 @@ public interface ResultDao {
      * @param taskId    作业id
      * @return 记录数
      */
-    Integer findResultStudentById(@Param("studentId") String studentId,
+    Integer findResultStudentById(@Param("studentId") Integer studentId,
                                   @Param("taskId") Integer taskId);
 
     /**
      * 根据作业id逻辑删除result表中数据
+     *
      * @param taskId
      * @return
      */

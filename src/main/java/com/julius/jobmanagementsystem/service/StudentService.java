@@ -44,7 +44,7 @@ public interface StudentService {
      * @param password
      * @return
      */
-    int updatePasswordByStuId(String stuId, String password) throws Exception;
+    int updatePasswordByStuId(Integer stuId, String password) throws Exception;
 
     /**
      * 根据学生学号修改名字
@@ -53,7 +53,7 @@ public interface StudentService {
      * @param name
      * @return
      */
-    int updateStuNameByStuId(String stuId, String name) throws Exception;
+    int updateStuNameByStuId(Integer stuId, String name) throws Exception;
 
     /**
      * 根据学生对象修改学生信息
@@ -70,7 +70,7 @@ public interface StudentService {
      * @return
      * @throws Exception
      */
-    String findStudentPwdByStuId(String stuId) throws Exception;
+    String findStudentPwdByStuId(Integer stuId) throws Exception;
 
     /**
      * 根据学号获取学生信息
@@ -78,12 +78,12 @@ public interface StudentService {
      * @param stuId
      * @return
      */
-    Student findStudentInfoByStuId(String stuId) throws Exception;
+    Student findStudentInfoByStuId(Integer stuId) throws Exception;
 
     /**
      * 获取所有学生信息
      *
-     * @return
+     * @return 学生信息对象集合
      */
     List<Student> findAllStudent();
 
@@ -94,7 +94,7 @@ public interface StudentService {
      * @param pwd   学生密码
      * @return
      */
-    Integer login(String stuId, String pwd);
+    Integer login(Integer stuId, String pwd);
 
     /**
      * 处理APP端学生注册

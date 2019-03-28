@@ -11,10 +11,10 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collections;
@@ -47,27 +47,28 @@ public class StudentController {
     /**
      * 学生上交作业
      *
-     * @param request    请求对象
      * @param response   响应对象
      * @param taskId     作业id
      * @param uploadFile 文件流对象
      * @return 重定向到之前页面
      */
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
-    public String upload(final HttpServletRequest request,
+    public String upload(final Integer studentId, final Model model,
                          final HttpServletResponse response,
-                         final @RequestParam(value = "taskid") int taskId,
+                         final @RequestParam(value = "taskid") Integer taskId,
                          final @RequestParam(value = "uploadfile", required = false)
                                  MultipartFile[] uploadFile) {
-        String currentID = (String) request.getSession().getAttribute("id");
+
         Task task = new Task();
         task.setTaskId(taskId);
-        Boolean result = Common.saveUpLoadFiles(uploadFile, task, currentID);
+        Boolean result = Common.saveUpLoadFiles(uploadFile, task, studentId);
         if (!result) {
             String message = "<html><body><h2>Sorry!出错啦!</h2></body></html>";
             Common.commonShow(null, response, message);
             return "";
         }
+        model.addAttribute("taskId",taskId);
+        model.addAttribute("studentId",studentId);
         return "redirect:/joblist";  //返回作业列表
     }
 
@@ -100,7 +101,7 @@ public class StudentController {
      */
     @RequestMapping(value = "/appLogin")
     @ResponseBody
-    public String appLogin(final @RequestParam(value = "studentId", required = true) String studentId,
+    public String appLogin(final @RequestParam(value = "studentId", required = true) Integer studentId,
                            final @RequestParam(value = "password", required = true) String password) {
         String loginResult = "成功";
         int result = studentService.login(studentId, password);
@@ -123,7 +124,7 @@ public class StudentController {
      */
     @RequestMapping(value = "/appRegister")
     @ResponseBody
-    public String appRegister(final @RequestParam(value = "studentId", required = true) String studentId,
+    public String appRegister(final @RequestParam(value = "studentId", required = true) Integer studentId,
                               final @RequestParam(value = "studentName", required = true) String studentName,
                               final @RequestParam(value = "password", required = true) String password) {
         String registerResult = "成功";
@@ -153,7 +154,7 @@ public class StudentController {
     @ResponseBody
     @RequestMapping(value = "/appUpload", method = RequestMethod.POST)
     public String appUploadTask(final @RequestParam("taskId") Integer taskId,
-                                final @RequestParam("studentId") String studentId,
+                                final @RequestParam("studentId") Integer studentId,
                                 final @RequestParam(value = "uploadFile", required = false)
                                         MultipartFile[] uploadFile) {
         LOGGER.debug("submit  task");

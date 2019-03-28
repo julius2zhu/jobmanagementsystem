@@ -36,15 +36,14 @@ public class StudentServiceImpl implements StudentService {
         return studentDao.deleteBatch(stuIdList);
     }
 
-    public int updatePasswordByStuId(String stuId, String pwd) {
+    public int updatePasswordByStuId(Integer stuId, String pwd) {
         Student stu = new Student();
         stu.setStuId(stuId);
         stu.setStuPwd(pwd);
         return studentDao.updateByStuIdSelective(stu);
     }
 
-    public int updateStuNameByStuId(String stuId, String name) {
-        // TODO Auto-generated method stub
+    public int updateStuNameByStuId(Integer stuId, String name) {
         Student stu = new Student();
         stu.setStuId(stuId);
         stu.setStuName(name);
@@ -52,16 +51,16 @@ public class StudentServiceImpl implements StudentService {
     }
 
     public int updateStudentInfo(Student stu) {
-        // TODO Auto-generated method stub
+
         return studentDao.updateByStuId(stu);
     }
 
-    public String findStudentPwdByStuId(String stuId) throws Exception {
+    public String findStudentPwdByStuId(Integer stuId) throws Exception {
         return studentDao.selectByStuId(stuId).getStuPwd();
     }
 
-    public Student findStudentInfoByStuId(String stuId) {
-        // TODO Auto-generated method stub
+    public Student findStudentInfoByStuId(Integer stuId) {
+
         return studentDao.selectByStuId(stuId);
     }
 
@@ -69,7 +68,7 @@ public class StudentServiceImpl implements StudentService {
         return studentDao.findAllStudent();
     }
 
-    public Integer login(String stuId, String pwd) {
+    public Integer login(Integer stuId, String pwd) {
         try {
             if (pwd.equals(findStudentPwdByStuId(stuId)))
                 return 1;

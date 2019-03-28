@@ -116,7 +116,7 @@ public class Common {
     public static Boolean saveUpLoadFiles(
             final MultipartFile[] multipartFiles,
             final Task task,
-            final String studentId) {
+            final Integer studentId) {
         final String path = Config.task + task.getTaskId() + "/" + studentId;
 
         UploadUtils up = new UploadUtils();

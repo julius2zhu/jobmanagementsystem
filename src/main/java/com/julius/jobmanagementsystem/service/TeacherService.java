@@ -55,7 +55,7 @@ public interface TeacherService {
 	 * @return
 	 * @throws Exception 
 	 */
-	 Teacher findTeacherByTeaId(String teaId) throws Exception;
+	 Teacher findTeacherByTeaId(Integer teaId) throws Exception;
 
 	/**
 	 * 查询所有教师
@@ -71,7 +71,7 @@ public interface TeacherService {
 	 * @return
 	 * @throws Exception 
 	 */
-	 String findPwdByTeaId(String teaId) throws Exception;
+	 String findPwdByTeaId(Integer teaId) throws Exception;
 
 	/**
 	 * 教师登录，成功返回1，否则返回0
@@ -80,5 +80,5 @@ public interface TeacherService {
 	 * @param pwd
 	 * @return
 	 */
-	 int login(String teaId, String pwd);
+	 int login(Integer teaId, String pwd);
 }
