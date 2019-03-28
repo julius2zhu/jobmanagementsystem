@@ -5,9 +5,13 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.julius.jobmanagementsystem.domain.entity.Result;
 import com.julius.jobmanagementsystem.domain.entity.Student;
+import com.julius.jobmanagementsystem.domain.repository.BatchInsert;
 import com.julius.jobmanagementsystem.domain.repository.ResultDao;
 import com.julius.jobmanagementsystem.service.ResultService;
 import com.julius.jobmanagementsystem.service.StudentService;
+import org.apache.ibatis.session.ExecutorType;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +27,8 @@ public class ResultServiceImpl implements ResultService {
     private ResultDao resultDao;
     @Autowired
     private StudentService studentService;
+    @Autowired
+    private SqlSessionFactory sqlSessionFactory;
 
     public int addResult(Result result) {
         return resultDao.insertSelective(result);
@@ -91,6 +97,10 @@ public class ResultServiceImpl implements ResultService {
 
     @Override
     public Integer pushAllStudent(final Integer taskId) {
+        //获取一个支持批量插入的SqlSession并且自动提交事务
+        SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH, true);
+        BatchInsert batchInsert = sqlSession.getMapper(BatchInsert.class);
+        List<Result> results = new ArrayList<>();
         //查询所有学生信息
         List<Student> studentList = studentService.findAllStudent();
         //遍历所有的学生id添加到result表中
@@ -99,13 +109,15 @@ public class ResultServiceImpl implements ResultService {
             //判断若是不存在则添加
             Integer count = resultDao.findResultStudentById(studentId, taskId);
             if (!(count > 0)) {
-                //插入数据
+                //添加数据
                 Result result = new Result();
                 result.setStuId(studentId);
                 result.setTaskId(taskId);
-                resultDao.insert(result);
+                results.add(result);
             }
         }
+        //批量插入
+        batchInsert.batchInsert(results);
         return null;
     }
 }

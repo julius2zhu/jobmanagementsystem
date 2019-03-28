@@ -39,10 +39,12 @@
 			</array>
 		</property>
 	</bean>
+
 	<!-- DAO接口所在包名，Spring会自动查找其下的类 -->
 	<bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="basePackage" value="com.julius.jobmanagementsystem.domain.repository"/>
 		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+
 	</bean>
 	
 	<!-- 添加事务管理 -->

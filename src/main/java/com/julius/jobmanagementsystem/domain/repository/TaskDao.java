@@ -81,4 +81,10 @@ public interface TaskDao {
      * @return 课程信息对象集合
      */
     List<Task> finTaskByStudentId(@Param("studentId") Integer studentId);
+
+    /**
+     * 查询作业表记录集合
+     * @return  taskId倒序集合
+     */
+    List<Task> findTaskMaxTaskId();
 }

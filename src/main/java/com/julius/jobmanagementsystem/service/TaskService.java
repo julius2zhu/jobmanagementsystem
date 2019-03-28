@@ -97,4 +97,9 @@ public interface TaskService {
      */
     int updateMinsizeByTaskId(Integer taskId, Integer minsize) throws Exception;
 
+    /**
+     * 查询数据表中最大的作业id
+     * @return  所有记录按照倒序排序
+     */
+    List<Task> findTaskMaxTaskId();
 }

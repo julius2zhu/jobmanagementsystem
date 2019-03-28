@@ -114,12 +114,18 @@
     WHERE   task_id = #{taskId}
   </delete>
 
+    <delete id="deleteTaskById">
+        UPDATE  result
+        SET delete_flag='0'
+        WHERE  task_id=#{taskId}
+    </delete>
+
     <insert id="insert">
     INSERT INTO   result
         (stu_id, task_id,createdDate)
     VALUES
         (#{stuId}, #{taskId},now())
-  </insert>
+   </insert>
 
     <insert id="insertSelective">
         INSERT INTO result

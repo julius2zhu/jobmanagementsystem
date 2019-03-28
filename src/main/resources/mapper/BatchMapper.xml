@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.julius.jobmanagementsystem.domain.repository.BatchInsert">
+    <!--结果集映射-->
+    <resultMap id="ResultMap" type="Result">
+        <id column="id" property="id"/>
+        <result column="stu_id" property="stuId"/>
+        <result column="task_id" property="taskId"/>
+        <result column="stu_name" property="studentName"/>
+        <result column="task_download_name" property="taskDownLoadName"/>
+        <result column="submit" property="submit"/>
+        <result column="score" property="score"/>
+        <result column="createdDate" property="createdDate"/>
+        <result column="updatedDate" property="updatedDate"/>
+        <result column="delete_flag" property="deleteFlag"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+     id,stu_id, task_id, submit, score,createdDate,updatedDate,delete_flag
+    </sql>
+
+    <insert id="batchInsert">
+    INSERT INTO   result
+        (stu_id, task_id,createdDate)
+     VALUES
+        <foreach collection="results" item="item" separator=",">
+            (#{item.stuId},#{item.taskId},now())
+        </foreach>
+    </insert>
+</mapper>

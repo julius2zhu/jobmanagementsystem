@@ -10,6 +10,7 @@ import com.julius.jobmanagementsystem.utils.Common;
 import com.julius.jobmanagementsystem.utils.Config;
 import com.julius.jobmanagementsystem.utils.FileUtils;
 import com.julius.jobmanagementsystem.utils.UploadUtils;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,6 @@ public class TeacherController {
     private StudentService studentService;
     @Autowired
     private TaskService taskService;
-
     /**
      * 根据作业号查询学生作业提交情况
      *
@@ -178,8 +178,8 @@ public class TeacherController {
                          @RequestParam(value = "datetime") String datetime,
                          @RequestParam(value = "uploadfile", required = false)
                                  MultipartFile[] uploadFiles) {
-        //查询数据表已经存在的作业记录,在其基础上自增
-        List<Task> tasks = taskService.findAllTasks();
+        //查询数据表已经存在的作业最大id,在其基础上自增
+        List<Task> tasks = taskService.findTaskMaxTaskId();
         Task task = new Task();
         Integer taskId = 0;
         if (tasks.size() > 0) {

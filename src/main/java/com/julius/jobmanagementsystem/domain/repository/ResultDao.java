@@ -133,4 +133,11 @@ public interface ResultDao {
      */
     Integer findResultStudentById(@Param("studentId") String studentId,
                                   @Param("taskId") Integer taskId);
+
+    /**
+     * 根据作业id逻辑删除result表中数据
+     * @param taskId
+     * @return
+     */
+    Integer deleteTaskById(Long taskId);
 }

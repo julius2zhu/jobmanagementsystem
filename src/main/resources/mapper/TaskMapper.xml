@@ -45,10 +45,10 @@
         <where>
             AND delete_flag='1'
         </where>
-        ORDER BY task_id  DESC
+        ORDER BY task_id DESC
     </select>
 
-    <select id="finTaskByStudentId" resultType="Task">
+    <select id="finTaskByStudentId" resultMap="TaskMap">
      SELECT
 	  r.task_id AS taskId,
 	  t.task_name AS taskName
@@ -57,6 +57,12 @@
     RIGHT  JOIN task t ON r.task_id = t.task_id
     WHERE
 	r.stu_id =#{studentId}  AND  t.delete_flag='1'
+    </select>
+
+    <select id="findTaskMaxTaskId" resultMap="TaskMap">
+      SELECT  task_id
+      FROM    task
+      ORDER BY task_id DESC
     </select>
 
     <delete id="deleteTaskById">
