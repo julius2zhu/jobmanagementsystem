@@ -62,23 +62,42 @@
                     </td>
                 </tr>
             </c:forEach>
-            <!-- <tr>
-              <td colspan="8"><div class="pagelist"> <a href="">上一页</a> <span class="current">1</span><a href="">2</a><a href="">3</a><a href="">下一页</a><a href="">尾页</a> </div></td>
-            </tr> -->
+            <tr>
+                <td colspan="8">
+                    <div class="pagelist">
+                        <a href="managejob?currentPage=1">首页</a> <a
+                            href="managejob?currentPage=${currentPage-1}">上一页</a>
+                        <span>
+                            当前页:
+                          <c:choose>
+                              <c:when test="${currentPage!=null}">
+                                  ${currentPage}
+                              </c:when>
+                              <c:otherwise>
+                                  1
+                              </c:otherwise>
+                          </c:choose>
+                        </span>
+                        <span>
+                            总页数:
+                          <c:choose>
+                              <c:when test="${totalPage!=null}">
+                                  ${totalPage}
+                              </c:when>
+                              <c:otherwise>
+                                  1
+                              </c:otherwise>
+                          </c:choose>
+                        </span>
+                        <a href="managejob?currentPage=${currentPage+1}">下一页</a> <a
+                            href="managejob?currentPage=${totalPage}">尾页</a>
+                    </div>
+                </td>
+            </tr>
         </table>
     </div>
 </form>
 <script type="text/javascript">
-
-    //验证session是否有效
-    /* {
-
-        var name = $("#i_info").attr("data-info");
-        if(name==""){
-            top.location="./";
-        }
-
-    } */
 
     function del(id) {
         if (confirm("您确定要删除吗?")) {

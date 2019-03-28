@@ -1,5 +1,8 @@
 package com.julius.jobmanagementsystem.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.julius.jobmanagementsystem.domain.entity.Task;
 import com.julius.jobmanagementsystem.domain.repository.ResultDao;
 import com.julius.jobmanagementsystem.domain.repository.TaskDao;
@@ -23,8 +26,22 @@ public class TaskServiceImpl implements TaskService {
     @Autowired
     private ResultDao resultDao;
     @Autowired
-    private  SqlSessionFactory sqlSessionFactory;
+    private SqlSessionFactory sqlSessionFactory;
 
+    @Override
+    public List<Task> findAllTasks(final Integer currentPage, Integer pageSize) {
+        Page<Task> taskPage = PageHelper.startPage(currentPage, pageSize);
+        List<Task> tasks = taskDao.findAllTasks();
+        //不会返回null会返回空集合
+        if (tasks.size() > 0) {
+            tasks.get(0).setCurrentPage(currentPage);
+            tasks.get(0).setTotalPage(taskPage.getPages());
+            tasks.get(0).setPageSize(taskPage.getPageSize());
+        }
+        return tasks;
+    }
+
+    @Override
     public List<Task> findAllTasks() {
         return taskDao.findAllTasks();
     }

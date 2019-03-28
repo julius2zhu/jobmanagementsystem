@@ -24,9 +24,19 @@ public interface TaskService {
     Task findTaskByTaskName(String taskName) throws Exception;
 
     /**
-     * 查找所有作业
+     * 查找所有作业分页信息
      *
-     * @return
+     * @param currentPage 当期页
+     * @param pageSize    每页显示条数
+     * @return 作业分页信息对象集合
+     */
+
+    List<Task> findAllTasks(Integer currentPage, Integer pageSize);
+
+    /**
+     * 查询所有作业信息
+     *
+     * @return 作业信息集合对象
      */
     List<Task> findAllTasks();
 
@@ -68,7 +78,7 @@ public interface TaskService {
      * @param taskRule
      * @return
      */
-     int updateTaskRuleByTaskId(Integer taskId, String taskRule) throws Exception;
+    int updateTaskRuleByTaskId(Integer taskId, String taskRule) throws Exception;
 
     /**
      * 根据所给对象选择更新task
@@ -99,7 +109,8 @@ public interface TaskService {
 
     /**
      * 查询数据表中最大的作业id
-     * @return  所有记录按照倒序排序
+     *
+     * @return 所有记录按照倒序排序
      */
     List<Task> findTaskMaxTaskId();
 }

@@ -53,8 +53,38 @@
 						<td>${task.taskName}</td>
 					</tr>
 				</c:forEach>
-
-
+				<tr>
+					<td colspan="8">
+						<div class="pagelist">
+							<a href="query?taskId=${taskId}&currentPage=1">首页</a> <a
+								href="query?taskId=${taskId}&currentPage=${currentPage-1}">上一页</a>
+							<span>
+                            当前页:
+                          <c:choose>
+							  <c:when test="${currentPage!=null}">
+								  ${currentPage}
+							  </c:when>
+							  <c:otherwise>
+								  1
+							  </c:otherwise>
+						  </c:choose>
+                        </span>
+							<span>
+                            总页数:
+                          <c:choose>
+							  <c:when test="${totalPage!=null}">
+								  ${totalPage}
+							  </c:when>
+							  <c:otherwise>
+								  1
+							  </c:otherwise>
+						  </c:choose>
+                        </span>
+							<a href="query?taskId=${taskId}&currentPage=${currentPage+1}">下一页</a> <a
+								href="query?taskId=${taskId}&currentPage=${totalPage}">尾页</a>
+						</div>
+					</td>
+				</tr>
 			</table>
 		</div>
 	</form>

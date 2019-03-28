@@ -17,7 +17,7 @@ import java.util.List;
 
 @Controller
 public class TumController {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private TaskService taskService;
     @Autowired
@@ -62,14 +62,39 @@ public class TumController {
         return "/joblist";
     }
 
+    /**
+     * 管理已经存在的作业信息
+     *
+     * @param model 模型共享对象
+     * @return 跳转页面
+     */
     @RequestMapping("/managejob")
-    public String tumManagejob(Model model) {
-        List<Task> taskList = new ArrayList<Task>();
-        try {
-            taskList = taskService.findAllTasks();
-        } catch (Exception e) {
-            e.printStackTrace();
+    public String manageTask(Integer currentPage, Model model) {
+        //当前页不能为负数
+        if (currentPage == null || currentPage < 1) {
+            currentPage = 1;
         }
+        Integer totalPage = 1;
+        Integer pageSize = 10;
+        List<Task> taskList = taskService.findAllTasks(currentPage, pageSize);
+
+        //传递的当前页可以查询到数据
+        if (taskList.size() > 0) {
+            currentPage = taskList.get(0).getCurrentPage();
+            totalPage = taskList.get(0).getTotalPage();
+            pageSize = taskList.get(0).getPageSize();
+        } else {
+            //当前页没有数据,已经到末页,直接返回上一页去查询
+            currentPage--;
+            taskList = taskService.findAllTasks(currentPage, pageSize);
+            currentPage = taskList.get(0).getCurrentPage();
+            totalPage = taskList.get(0).getTotalPage();
+            pageSize = taskList.get(0).getPageSize();
+        }
+        //返回分页信息
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("totalPage", totalPage);
+        model.addAttribute("pageSize", pageSize);
         model.addAttribute("taskList", taskList);
         return "/managejob";
     }
