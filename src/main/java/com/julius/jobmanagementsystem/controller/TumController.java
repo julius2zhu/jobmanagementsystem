@@ -85,11 +85,15 @@ public class TumController {
             pageSize = taskList.get(0).getPageSize();
         } else {
             //当前页没有数据,已经到末页,直接返回上一页去查询
-            currentPage--;
+            if (currentPage > 1) {
+                currentPage--;
+            }
             taskList = taskService.findAllTasks(currentPage, pageSize);
-            currentPage = taskList.get(0).getCurrentPage();
-            totalPage = taskList.get(0).getTotalPage();
-            pageSize = taskList.get(0).getPageSize();
+            if (taskList.size() > 0) {
+                currentPage = taskList.get(0).getCurrentPage();
+                totalPage = taskList.get(0).getTotalPage();
+                pageSize = taskList.get(0).getPageSize();
+            }
         }
         //返回分页信息
         model.addAttribute("currentPage", currentPage);

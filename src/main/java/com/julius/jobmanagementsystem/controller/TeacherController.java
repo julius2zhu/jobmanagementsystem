@@ -6,11 +6,9 @@ import com.julius.jobmanagementsystem.domain.entity.Task;
 import com.julius.jobmanagementsystem.service.ResultService;
 import com.julius.jobmanagementsystem.service.StudentService;
 import com.julius.jobmanagementsystem.service.TaskService;
-import com.julius.jobmanagementsystem.utils.Common;
 import com.julius.jobmanagementsystem.utils.Config;
 import com.julius.jobmanagementsystem.utils.FileUtils;
 import com.julius.jobmanagementsystem.utils.UploadUtils;
-import org.apache.ibatis.session.SqlSessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +39,7 @@ public class TeacherController {
     private StudentService studentService;
     @Autowired
     private TaskService taskService;
+
     /**
      * 根据作业号查询学生作业提交情况
      *
@@ -68,11 +67,15 @@ public class TeacherController {
             pageSize = results.get(0).getPageSize();
         } else {
             //当前页没有数据,已经到末页,直接返回上一页去查询
-            currentPage--;
+            if (currentPage > 1) {
+                currentPage--;
+            }
             results = resultService.findResultByTaskId(taskId, currentPage);
-            currentPage = results.get(0).getCurrentPage();
-            totalPage = results.get(0).getTotalPage();
-            pageSize = results.get(0).getPageSize();
+            if (results.size() > 0) {
+                currentPage = results.get(0).getCurrentPage();
+                totalPage = results.get(0).getTotalPage();
+                pageSize = results.get(0).getPageSize();
+            }
         }
         //返回分页信息
         model.addAttribute("currentPage", currentPage);
