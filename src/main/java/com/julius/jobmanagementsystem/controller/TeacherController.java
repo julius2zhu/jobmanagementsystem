@@ -2,8 +2,11 @@ package com.julius.jobmanagementsystem.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.julius.jobmanagementsystem.domain.entity.Result;
+import com.julius.jobmanagementsystem.domain.entity.Student;
+import com.julius.jobmanagementsystem.domain.entity.StudentAndTeacherRelation;
 import com.julius.jobmanagementsystem.domain.entity.Task;
 import com.julius.jobmanagementsystem.service.ResultService;
+import com.julius.jobmanagementsystem.service.StudentAndTeacherRelationService;
 import com.julius.jobmanagementsystem.service.StudentService;
 import com.julius.jobmanagementsystem.service.TaskService;
 import com.julius.jobmanagementsystem.utils.Config;
@@ -13,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,9 +40,33 @@ public class TeacherController {
     @Autowired
     private ResultService resultService;
     @Autowired
-    private StudentService studentService;
-    @Autowired
     private TaskService taskService;
+    @Autowired
+    private StudentAndTeacherRelationService studentAndTeacherRelationService;
+    @Autowired
+    private StudentService studentService;
+
+    /**
+     * 教师管理学生信息界面
+     *
+     * @param request 请求对象
+     * @param model   模型共享对象
+     * @return 页面
+     */
+    @RequestMapping("/studentInfoManage")
+    public String studentInfoManage(HttpServletRequest request, Model model) {
+        Integer teacherId = 0;
+        try {
+            teacherId = Integer.valueOf(request.getSession().getAttribute("id").toString());
+        } catch (Exception e) {
+            LOGGER.debug("用户已经离线");
+        }
+        //获取该教师所管辖的学生
+        List<Student> students = studentService.selectStudentInfoByTeacherId(teacherId);
+        model.addAttribute("teacherId", teacherId);
+        model.addAttribute("students", students);
+        return "studentInfoManage";
+    }
 
     /**
      * 根据作业号查询学生作业提交情况
@@ -90,6 +118,12 @@ public class TeacherController {
         return "/queryResult";
     }
 
+    /**
+     * 教师修改分数
+     *
+     * @param json     json对象
+     * @param response 响应对象
+     */
     @RequestMapping(value = "/updateResult", method = RequestMethod.POST)
     public void updateResult(@RequestBody JSONObject json, HttpServletResponse response) {
         Integer stuId = Integer.valueOf(json.getString("stuId"));
@@ -219,8 +253,14 @@ public class TeacherController {
         return "redirect:/managejob";
     }
 
+    /**
+     * 检作业是否存在
+     *
+     * @param taskName 作业名
+     * @param response 响应对象
+     */
     @RequestMapping("/taskIsExist")
-    public void taskIsExist(String taskname, HttpServletResponse response) {
+    public void taskIsExist(String taskName, HttpServletResponse response) {
         String flag = "true";
         List<Task> tasks = new ArrayList<Task>();
         // 存放所有的作业
@@ -230,7 +270,7 @@ public class TeacherController {
             e.printStackTrace();
         }
         for (Task task : tasks) {
-            if (task.getTaskName().equals(taskname)) {
+            if (task.getTaskName().equals(taskName)) {
                 flag = "false";
             }
         }
@@ -274,6 +314,5 @@ public class TeacherController {
             file.mkdirs();
         }
         return "redirect:/managejob";
-
     }
 }

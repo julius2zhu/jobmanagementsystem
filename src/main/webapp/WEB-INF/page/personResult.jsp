@@ -32,10 +32,8 @@
 
         <table class="table table-hover text-center">
             <tr>
-
                 <th>作业名</th>
                 <th>成绩</th>
-
             </tr>
             <c:forEach items="${resultList}" var="result" varStatus="status">
                 <tr>

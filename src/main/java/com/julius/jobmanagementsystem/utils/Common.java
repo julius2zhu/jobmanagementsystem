@@ -1,5 +1,6 @@
 package com.julius.jobmanagementsystem.utils;
 
+import com.julius.jobmanagementsystem.domain.entity.BaseDomain;
 import com.julius.jobmanagementsystem.domain.entity.Result;
 import com.julius.jobmanagementsystem.domain.entity.Task;
 import com.julius.jobmanagementsystem.service.ResultService;
@@ -10,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
@@ -178,5 +181,36 @@ public class Common {
             results.get(0).setTotalPage(totalPage);
         }
         return results;
+    }
+
+    /**
+     * 设置当前登录用户session中信息
+     *
+     * @param request    请求对象
+     * @param baseDomain 通用存储对象
+     */
+    public static void setCurrentInfo(HttpServletRequest request, BaseDomain baseDomain) {
+        HttpSession session = request.getSession();
+        session.setAttribute("userId", baseDomain.getCurrentId());
+        session.setAttribute("userName", baseDomain.getCurrentName());
+        session.setAttribute("passWord", baseDomain.getCurrentPwd());
+    }
+
+    /**
+     * 获取当前登录用户session中信息
+     *
+     * @param request 请求对象
+     * @return 通用存储对象
+     */
+    public static BaseDomain getCurrentInfo(final HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        Integer userId = Integer.valueOf(session.getAttribute("userId").toString());
+        String userName = session.getAttribute("userName").toString();
+        String pwd = session.getAttribute("passWord").toString();
+        BaseDomain baseDomain = new BaseDomain();
+        baseDomain.setCurrentId(userId);
+        baseDomain.setCurrentName(userName);
+        baseDomain.setCurrentPwd(pwd);
+        return baseDomain;
     }
 }

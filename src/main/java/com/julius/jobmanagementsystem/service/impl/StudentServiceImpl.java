@@ -1,6 +1,7 @@
 package com.julius.jobmanagementsystem.service.impl;
 
 import com.julius.jobmanagementsystem.domain.entity.Student;
+import com.julius.jobmanagementsystem.domain.entity.Teacher;
 import com.julius.jobmanagementsystem.domain.repository.StudentDao;
 import com.julius.jobmanagementsystem.service.StudentService;
 import com.julius.jobmanagementsystem.utils.StudentUtils;
@@ -93,5 +94,10 @@ public class StudentServiceImpl implements StudentService {
             }
         }
         return result;
+    }
+
+    @Override
+    public List<Student> selectStudentInfoByTeacherId(final  Integer teacherId) {
+        return  studentDao.selectStudentInfoByTeacherId(teacherId);
     }
 }

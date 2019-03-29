@@ -78,7 +78,7 @@ public interface StudentService {
      * @param stuId
      * @return
      */
-    Student findStudentInfoByStuId(Integer stuId) throws Exception;
+    Student findStudentInfoByStuId(Integer stuId);
 
     /**
      * 获取所有学生信息
@@ -103,4 +103,12 @@ public interface StudentService {
      * @return 受影响的行数
      */
     Integer register(Student student);
+
+    /**
+     * 根据教师号查询学生信息
+     *
+     * @param teacherId 教师号
+     * @return 学生信息对象集合
+     */
+    List<Student> selectStudentInfoByTeacherId(Integer teacherId);
 }

@@ -25,7 +25,7 @@
 	<form method="post" action="">
 		<div class="panel admin-panel">
 			<div class="panel-head">
-				<strong class="icon-reorder"> 导出成绩</strong>
+				<strong class="icon-reorder"> 成绩导出</strong>
 			</div>
 			<div class="padding border-bottom">
 				<ul class="search">
@@ -43,7 +43,7 @@
 			</div>
 			<table class="table table-hover text-center">
 				<tr>
-					<th width="120">ID</th>
+					<th width="120">序号</th>
 					<th>作业名</th>
 				</tr>
 				<c:forEach items="${taskList}" var="task" varStatus="status">

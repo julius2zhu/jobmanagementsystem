@@ -94,4 +94,12 @@ public interface StudentDao {
      * @return 学生信息对象集合
      */
     List<Student> findAllStudent();
+
+    /**
+     * 根据教师id查询学生信息(多表查询)
+     *
+     * @param teacherId 教师号
+     * @return 学生信息实体对象
+     */
+    List<Student> selectStudentInfoByTeacherId(Integer teacherId);
 }

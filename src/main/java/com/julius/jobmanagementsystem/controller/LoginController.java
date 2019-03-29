@@ -38,7 +38,6 @@ public class LoginController {
 
 	@RequestMapping(value = "/student", method = RequestMethod.GET)
 	public String studentLoginGet(HttpServletRequest request) {
-
 		String name = (String) request.getSession().getAttribute("stuName");
 		if (name != null)
 			return "/student";

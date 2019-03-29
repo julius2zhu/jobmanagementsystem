@@ -6,6 +6,7 @@
         <id column="id" property="id"/>
         <result column="stu_id" property="stuId"/>
         <result column="stu_name" property="stuName"/>
+        <result column="department" property="department"/>
         <result column="stu_pwd" property="stuPwd"/>
         <result column="createdDate" property="createdDate"/>
         <result column="updatedDate" property="updatedDate"/>
@@ -13,7 +14,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-    id,stu_id, stu_name, stu_pwd,createdDate,updatedDate,delete_flag
+    id,stu_id, stu_name,stu_pwd,createdDate,updatedDate,delete_flag
    </sql>
 
     <select id="selectByStuId" resultMap="StudentMap">
@@ -38,8 +39,15 @@
     <select id="findAllStudent" resultMap="StudentMap">
         SELECT
         <include refid="Base_Column_List"/>
-        FROM  student
+        FROM student
         WHERE delete_flag='1'
+    </select>
+
+    <select id="selectStudentInfoByTeacherId"  resultMap="StudentMap">
+      SELECT   s.stu_id,s.stu_name,s.department,str.teacher_id
+      FROM     student  s
+      RIGHT    JOIN    student_teacher_relation  str ON str.student_id=s.stu_id
+      WHERE   teacher_id=#{teacherId} AND str.delete_flag='1'
     </select>
 
     <delete id="deleteByStuId">

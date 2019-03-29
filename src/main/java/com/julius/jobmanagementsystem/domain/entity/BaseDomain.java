@@ -16,6 +16,12 @@ import java.util.Date;
 public class BaseDomain {
     //主键id
     private Long id;
+    //当前登录用户的id/用户账号
+    private Integer currentId;
+    //当前登录用的姓名
+    private String currentName;
+    //当前登录用户的密码
+    private String currentPwd;
     //当前页
     private Integer currentPage;
     //总页数

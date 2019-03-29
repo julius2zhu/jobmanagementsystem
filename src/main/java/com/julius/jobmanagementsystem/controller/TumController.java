@@ -25,12 +25,12 @@ public class TumController {
 
     @RequestMapping("/addjob")
     public String tumAddjob() {
-        return "/addjob";
+        return "addjob";
     }
 
-    @RequestMapping("/addStudent")
+    @RequestMapping("/importStudent")
     public String tumAddStudent() {
-        return "/addStudent";
+        return "importStudent";
     }
 
     @RequestMapping("/exportResult")
@@ -42,7 +42,7 @@ public class TumController {
             e.printStackTrace();
         }
         model.addAttribute("taskList", taskList);
-        return "/exportResult";
+        return "exportResult";
     }
 
     @RequestMapping("/joblist")
@@ -52,7 +52,7 @@ public class TumController {
         model.addAttribute("studentId", studentId);
         model.addAttribute("taskList", taskList);
         model.addAttribute("resultList", resultList);
-        return "/joblist";
+        return "joblist";
     }
 
     /**
@@ -93,12 +93,12 @@ public class TumController {
         model.addAttribute("totalPage", totalPage);
         model.addAttribute("pageSize", pageSize);
         model.addAttribute("taskList", taskList);
-        return "/managejob";
+        return "managejob";
     }
 
     @RequestMapping(value = "/pass")
     public String pass() {
-        return "/pass";
+        return "pass";
     }
 
     @RequestMapping("/personResult")
@@ -113,7 +113,7 @@ public class TumController {
             model.addAttribute("resultList", resultList);
         }
         //页面跳转
-        return "/personResult";
+        return "personResult";
     }
 
     /**
@@ -132,7 +132,7 @@ public class TumController {
         }
         //session返回
         model.addAttribute("taskList", list);
-        return "/queryResult";
+        return "queryResult";
     }
 
     @RequestMapping("/updatejob")
@@ -143,7 +143,7 @@ public class TumController {
         model.addAttribute("taskId", taskId);
         model.addAttribute("taskName", taskName);
         model.addAttribute("taskExpiry", taskExpiry);
-        return "/updatejob";
+        return "updatejob";
     }
 
     /**
