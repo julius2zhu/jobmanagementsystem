@@ -67,7 +67,6 @@ public class TaskServiceImpl implements TaskService {
     }
 
     public int updateTaskRuleByTaskId(Integer taskId, String taskRule) {
-
         Task task = new Task();
         task.setTaskId(taskId);
         task.setTaskRule(taskRule);
@@ -110,7 +109,6 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public int updateTask(Task task) throws Exception {
-
         return taskDao.updateByTaskIdSelective(task);
     }
 

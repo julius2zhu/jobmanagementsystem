@@ -48,8 +48,7 @@
           <input type="file" accept="application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.pdf"  class="input w50" data-validate="required:请选择文件" multiple="multiple" name="uploadfile">
         </div>
       </div>     
-      
-     
+
       <div class="form-group">
         <div class="label">
           <label>截止时间：</label>
@@ -65,7 +64,7 @@
           <label></label>
         </div>
         <div class="field">
-          <button class="button bg-main icon-check-square-o" type="submit"> 提交</button>
+          <button class="button bg-main icon-check-square-o" type="submit">提交</button>
         </div>
       </div>
     </form>
@@ -75,9 +74,8 @@
 
 <script type="text/javascript">
 
-
     $(".form_datetime").datetimepicker({
-      format: "yyyy-mm-dd hh:ii",
+      format: "yyyy-mm-dd hh:ii:ss",
       autoclose: true,
       todayBtn: true,
       language:'zh-CN',

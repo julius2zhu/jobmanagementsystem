@@ -102,12 +102,12 @@ public class TumController {
     }
 
     @RequestMapping("/personResult")
-    public String tumpersonResult(HttpServletRequest request, Model model) {
-        Integer stuId = 0;
-        //封装成一个个集合对象
+    public String personResult(HttpServletRequest request, Model model) {
+        String studentId = request.getSession().getAttribute("studentId").toString();
         List<Task> taskList = taskService.findAllTasks();
-        List<Result> resultList = getResultList(taskList, stuId);
         if (taskList != null && taskList.size() > 0) {
+            //封装成一个个集合对象
+            List<Result> resultList = getResultList(taskList, Integer.valueOf(studentId));
             //添加到session进行返回
             model.addAttribute("taskList", taskList);
             model.addAttribute("resultList", resultList);

@@ -18,6 +18,7 @@ public  final class Task  extends  BaseDomain implements Serializable {
     //作业评分规则存放路径
     private String taskRule;
     //作业截止日期
+
     private Date taskExpiry;
     //作业文件大小最小值
     private Integer taskMinsize;

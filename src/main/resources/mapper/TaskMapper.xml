@@ -135,23 +135,23 @@
         UPDATE task
         <set>
             <if test="taskName!= null">
-                task_name = #{taskName,jdbcType=VARCHAR},
+                task_name = #{taskName},
             </if>
             <if test="taskDownloadName!= null">
-                task_download_name = #{taskDownloadName,jdbcType=VARCHAR},
+                task_download_name = #{taskDownloadName},
             </if>
             <if test="taskRule != null">
-                task_rule = #{taskRule,jdbcType=VARCHAR},
+                task_rule = #{taskRule},
             </if>
             <if test="taskExpiry != null">
-                task_expiry = #{taskExpiry,jdbcType=TIMESTAMP},
+                task_expiry =#{taskExpiry},
             </if>
             <if test="taskMinsize != null">
                 task_minsize = #{taskMinsize,jdbcType=INTEGER},
             </if>
             updatedDate=now()
         </set>
-        WHERE task_id = #{taskId,jdbcType=INTEGER}
+        WHERE task_id = #{taskId}
     </update>
 
     <update id="updateByTaskId">

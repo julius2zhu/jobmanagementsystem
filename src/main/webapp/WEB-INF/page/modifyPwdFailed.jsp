@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1><strong>修改密码失败，请输入正确的原始密码！</strong></h1>
+	<h1><strong>修改密码失败，请稍后再试！</strong></h1>
 </body>
 </html>

@@ -75,7 +75,7 @@ public interface StudentService {
     /**
      * 根据学号获取学生信息
      *
-     * @param stuId
+     * @param stuId 学生学号
      * @return
      */
     Student findStudentInfoByStuId(Integer stuId);

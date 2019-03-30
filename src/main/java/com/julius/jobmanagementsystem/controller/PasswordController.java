@@ -26,14 +26,15 @@ public class PasswordController {
 
     @RequestMapping(value = "/modifyStuPassword", method = RequestMethod.POST)
     public String modifyStuPassword(HttpServletRequest request) {
-        String currentID = (String) request.getSession().getAttribute("id");
         try {
-            Student stu = studentService.findStudentInfoByStuId(Integer.valueOf(currentID));
-            if (!stu.getStuPwd().equals(request.getParameter("oldPwd"))) {
-                return "/modifyPwdFailed";
+            //获取当前学生session中保存的账号
+            String studentId = request.getSession().getAttribute("studentId").toString();
+            String oldPassword = request.getParameter("oldPwd");
+            String newPassword = request.getParameter("newPwd");
+            Student stu = studentService.findStudentInfoByStuId(Integer.valueOf(studentId));
+            if (stu.getStuPwd().equals(oldPassword)) {
+                studentService.updatePasswordByStuId(Integer.valueOf(studentId), newPassword);
             }
-            studentService.updatePasswordByStuId(Integer.valueOf(currentID), request.getParameter("newPwd"));
-
         } catch (Exception e) {
             e.printStackTrace();
             return "/modifyPwdFailed";

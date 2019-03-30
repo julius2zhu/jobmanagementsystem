@@ -170,7 +170,7 @@
             updatedDate=now()
         </set>
         WHERE stu_id = #{stuId}
-        AND task_id = #{taskId}
+        AND   task_id = #{taskId}
     </update>
 
     <update id="updateByPrimaryKey">

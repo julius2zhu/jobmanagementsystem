@@ -33,14 +33,14 @@
 <div class="panel admin-panel">
   <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>修改作业</strong></div>
   <div class="body-content">
-    <form method="post" class="form-x" action="updatetask" enctype="multipart/form-data">  
+    <form method="post" class="form-x" action="updatetask" enctype="multipart/form-data">
       <div class="form-group">
         <div class="label">
           <label>作业名：</label>
         </div>
         <div class="field">
-        <input type="text" name="taskid" style="display: none;" class="input w50" value="${taskId}" />
-          <input type="text" name="taskname" class="input w50" value="${taskName}"  data-validate="required:请输入作业名" />
+        <input type="text" name="taskId" style="display: none;" class="input w50" value="${taskId}" />
+          <input type="text" name="taskName" class="input w50" value="${taskName}"  data-validate="required:请输入作业名" />
           <div class="tips"></div>
         </div>
       </div>
@@ -51,25 +51,27 @@
         <div class="field">
           <input type="file"  class="input w50" multiple="multiple" name="uploadfile">
         </div>
-      </div>     
-      
-     
+      </div>
+
+
       <div class="form-group">
         <div class="label">
           <label>截止时间：</label>
         </div>
         <div class="input-append date form_datetime">
-          <input class="input w50" value="${taskExpiry}" data-validate="required:请选择时间" type="text" style="cursor: text;background-color:white;text-align:center" name="datetime">
+          <input class="input w50" value="${taskExpiry}" data-validate="required:请选择时间"
+                 type="datetime" style="cursor: text;background-color:white;text-align:center"
+                 name="taskExpiry">
           <span class="add-on"><i class="icon-th"></i></span>
         </div>
       </div>
-         
+
       <div class="form-group">
         <div class="label">
           <label></label>
         </div>
         <div class="field">
-          <button class="button bg-main icon-check-square-o" type="submit" onclick="return check();" > 修改提交</button>
+          <button class="button bg-main icon-check-square-o" type="submit" onclick="return check();" >修改提交</button>
         </div>
       </div>
     </form>
@@ -86,11 +88,11 @@
 	if(name==""){
 		top.location="./";
 	}
-	
+
 } */
 
     $(".form_datetime").datetimepicker({
-      format: "yyyy-mm-dd hh:ii",
+      format: "yyyy-mm-dd hh:ii:ss",
       autoclose: true,
       todayBtn: true,
       language:'zh-CN',
@@ -104,4 +106,5 @@
     	}
     }
   </script>
-</body></html>
+</body>
+</html>
