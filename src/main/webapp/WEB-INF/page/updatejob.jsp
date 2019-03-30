@@ -61,7 +61,7 @@
         <div class="input-append date form_datetime">
           <input class="input w50" value="${taskExpiry}" data-validate="required:请选择时间"
                  type="datetime" style="cursor: text;background-color:white;text-align:center"
-                 name="taskExpiry">
+                 name="taskExpiryDate">
           <span class="add-on"><i class="icon-th"></i></span>
         </div>
       </div>

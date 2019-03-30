@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Setter
 @Getter
-public  final class Task  extends  BaseDomain implements Serializable {
+public final class Task extends BaseDomain implements Serializable {
     //作业ID
     private Integer taskId;
     //作业名称 
@@ -17,8 +17,9 @@ public  final class Task  extends  BaseDomain implements Serializable {
     private String taskDownloadName;
     //作业评分规则存放路径
     private String taskRule;
+    //前台传递过来的时间,string类型
+    private String taskExpiryDate;
     //作业截止日期
-
     private Date taskExpiry;
     //作业文件大小最小值
     private Integer taskMinsize;

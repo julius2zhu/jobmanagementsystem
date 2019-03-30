@@ -26,9 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -156,7 +154,7 @@ public class TeacherController {
             final Task updateTask,
             final @RequestParam(value = "uploadfile", required = false)
                     MultipartFile[] uploadfile) {
-        System.out.println(updateTask.getTaskExpiry());
+        System.out.println(updateTask.getTaskExpiryDate());
         String oldUrl = "";
         String newUrl = "";
         String oldName = "";
@@ -169,9 +167,7 @@ public class TeacherController {
             oldUrl = Config.title + updateTask.getTaskId();
             newUrl = Config.title + updateTask.getTaskId();
             task.setTaskName(updateTask.getTaskName());
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyy-mm-dd HH:mm:ss");
-
-            task.setTaskExpiry(updateTask.getTaskExpiry());
+            task.setTaskExpiryDate(updateTask.getTaskExpiryDate());
             if (newName.equals("") || newName == null) {
                 task.setTaskDownloadName(null);
             } else {
@@ -208,7 +204,7 @@ public class TeacherController {
      */
     @RequestMapping(value = "/uploadtask", method = RequestMethod.POST)
     public String upload(@RequestParam(value = "taskname") String taskName,
-                         @RequestParam(value = "datetime") Date datetime,
+                         @RequestParam(value = "datetime") String datetime,
                          @RequestParam(value = "uploadfile", required = false)
                                  MultipartFile[] uploadFiles) {
         System.out.println(datetime);
@@ -227,17 +223,14 @@ public class TeacherController {
         }
         //文件存放路径,绝对路径+作业id
         String road = Config.title + task.getTaskId();
-
         UploadUtils up = new UploadUtils();
         if (up.uploadUtils(uploadFiles, road)) {
             //设置作业名称
             task.setTaskName(taskName);
             //文件下载名称
             task.setTaskDownloadName(uploadFiles[0].getOriginalFilename());
-            // 日期转换
-//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
+            task.setTaskExpiryDate(datetime);
             try {
-                task.setTaskExpiry(datetime);
                 // 把作业记录添加到数据库中
                 taskService.addTask(task);
             } catch (Exception e) {

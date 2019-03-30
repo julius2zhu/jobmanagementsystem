@@ -81,9 +81,9 @@
        #{taskName},
        #{taskDownloadName},
        #{taskRule},
-       #{taskExpiry},
+       DATE_FORMAT(#{taskExpiryDate},'%Y-%m-%d %T'),
        #{taskMinsize},
-          now()
+         now()
        )
    </insert>
 
@@ -143,8 +143,8 @@
             <if test="taskRule != null">
                 task_rule = #{taskRule},
             </if>
-            <if test="taskExpiry != null">
-                task_expiry =#{taskExpiry},
+            <if test="taskExpiryDate != null">
+                task_expiry =DATE_FORMAT(#{taskExpiryDate},'%Y-%m-%d %T'),
             </if>
             <if test="taskMinsize != null">
                 task_minsize = #{taskMinsize,jdbcType=INTEGER},
