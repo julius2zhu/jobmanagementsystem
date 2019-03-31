@@ -50,8 +50,8 @@
 
     <select id="finTaskByStudentId" resultMap="TaskMap">
      SELECT
-	  r.task_id AS taskId,
-	  t.task_name AS taskName
+	  r.task_id,
+	  t.task_name
      FROM
 	 result r
     RIGHT  JOIN task t ON r.task_id = t.task_id

@@ -98,7 +98,8 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<Task> finTaskByStudentId(Integer studentId) {
+    public List<Task> finTaskByStudentId(Integer studentId)
+    {
         return taskDao.finTaskByStudentId(studentId);
     }
 
