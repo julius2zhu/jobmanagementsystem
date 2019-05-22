@@ -24,6 +24,12 @@ public class PasswordController {
     @Autowired
     TeacherService teacherService;
 
+    /**
+     * 根据session中信息修改当前用户密码
+     *
+     * @param request 请求信息对象
+     * @return 返回物理视图
+     */
     @RequestMapping(value = "/modifyStuPassword", method = RequestMethod.POST)
     public String modifyStuPassword(HttpServletRequest request) {
         try {
@@ -41,7 +47,12 @@ public class PasswordController {
         }
         return "/modifyPwdSuccess";
     }
-
+    /**
+     * 根据session中信息修改当前用户密码
+     *
+     * @param request 请求信息对象
+     * @return 返回物理视图
+     */
     @RequestMapping(value = "/modifyTeaPassword", method = RequestMethod.POST)
     public String modifyTeaPassword(HttpServletRequest request) {
         String currentID = (String) request.getSession().getAttribute("id");
@@ -51,7 +62,6 @@ public class PasswordController {
                 return "/modifyPwdFailed";
             }
             teacherService.updatePasswordByTeaId(currentID, request.getParameter("newPwd"));
-
         } catch (Exception e) {
             e.printStackTrace();
             return "/modifyPwdFailed";

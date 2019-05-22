@@ -68,7 +68,7 @@ public class TeacherServiceImpl implements TeacherService {
             else
                 return 0;
         } catch (Exception e) {
-
+            e.printStackTrace();
             return -1;
         }
     }

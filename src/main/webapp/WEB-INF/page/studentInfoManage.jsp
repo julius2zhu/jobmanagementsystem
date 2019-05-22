@@ -16,107 +16,159 @@
     <!-- font-awesome图标 -->
     <script src="${ctx}/js/jquery.js"></script>
     <script src="${ctx}/js/pintuer.js"></script>
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!--element样式和库-->
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 </head>
 <body>
-<i id="i_info" data-info="${teaName}" style="display: none;"></i>
-<form method="post" onsubmit="return false;">
-    <div class="panel admin-panel">
-        <div class="panel-head"><strong class="icon-reorder">学生列表</strong></div>
-        <div class="padding border-bottom">
-            <ul class="search">
-                <li>
-                    <a class="button border-main icon-plus-square-o" href="addjob">添加学生</a>
-                    <button type="button" class="button border-green" id="checkall">
-                        <span class="icon-check"></span> 全选
-                    </button>
-                    <button class="button border-red"><span class="icon-trash-o"></span>批量删除</button>
-                </li>
-            </ul>
-        </div>
-        <table class="table table-hover text-center">
-            <tr>
-                <th width="120">序号</th>
-                <th>学生学号</th>
-                <th>学生姓名</th>
-                <th>所在系部</th>
-                <th>操作</th>
-            </tr>
-            <c:forEach items="${students}" varStatus="status" var="student">
-                <tr>
-                    <td>
-                        <input type="checkbox" name="id[]" value="${student.stuId}"/>
-                            ${status.count}
-                    </td>
-                    <td align="center">
-                        <input
-                                style="width: 100px; border: 0px; background-color: white; cursor: text; text-align: center;"
-                                type="text"
-                                value="${student.stuId}"/>
-                    </td>
-                    <td align="center">
-                        <input
-                                style="width: 100px; border: 0px; background-color: white; cursor: text; text-align: center;"
-                                type="text"
-                                value="${student.stuName}"/>
-                    </td>
-
-                    <td align="center">
-                        <input
-                                style="width: 200px; border: 0px; background-color: white; cursor: text; text-align: center;"
-                                type="text"
-                                value="${student.department}"/>
-                    </td>
-                    <td>
-                        <div class="button-group">
-                            <a name="edit" class="button border-main"
-                               href="updateStudentInfo?studentId=${student.stuId}&studentName=${student.stuName}&depart=${student.department}">修改</a>
-                        </div>
-                        <div class="button-group">
-                            <a class="button border-red" href="deleteStudentInfo?studentId=${student.stuId}">
-                                <span class="icon-trash-o">
-                                </span>删除
-                            </a>
-                        </div>
-                    </td>
-                </tr>
-            </c:forEach>
-            <tr>
-                <td colspan="8">
-                    <div class="pagelist">
-                        <a href="managejob?currentPage=1">首页</a> <a
-                            href="managejob?currentPage=${currentPage-1}">上一页</a>
-                        <span>
-                            当前页:
-                          <c:choose>
-                              <c:when test="${currentPage!=null}">
-                                  ${currentPage}
-                              </c:when>
-                              <c:otherwise>
-                                  1
-                              </c:otherwise>
-                          </c:choose>
-                        </span>
-                        <span>
-                            总页数:
-                          <c:choose>
-                              <c:when test="${totalPage!=null}">
-                                  ${totalPage}
-                              </c:when>
-                              <c:otherwise>
-                                  1
-                              </c:otherwise>
-                          </c:choose>
-                        </span>
-                        <a href="managejob?currentPage=${currentPage+1}">下一页</a> <a
-                            href="managejob?currentPage=${totalPage}">尾页</a>
-                    </div>
-                </td>
-            </tr>
-        </table>
+<div id="app">
+    <el-button type="success" @click="alert">添加学生</el-button>
+    <el-table
+            ref="multipleTable"
+            :data="tableData"
+            tooltip-effect="dark"
+            style="width: 100%"
+            @selection-change="handleSelectionChange">
+        <el-table-column
+                type="selection"
+                width="55">
+        </el-table-column>
+        <el-table-column
+                label="姓名"
+                width="120">
+            <template slot-scope="scope">{{ scope.row.date }}</template>
+        </el-table-column>
+        <el-table-column
+                prop="name"
+                label="学号"
+                width="120">
+        </el-table-column>
+        <el-table-column
+                prop="address"
+                label="班级"
+                show-overflow-tooltip>
+        </el-table-column>
+        <el-table-column
+                prop="address"
+                label="任课老师"
+                show-overflow-tooltip>
+        </el-table-column>
+        <el-table-column
+                prop="address"
+                label="专业"
+                show-overflow-tooltip>
+        </el-table-column>
+        <el-table-column
+                align="right">
+            <template slot="header" slot-scope="scope">
+                <el-input
+                        v-model="search"
+                        size="mini"
+                        placeholder="输入关键字搜索"/>
+            </template>
+            <template slot-scope="scope">
+                <el-button
+                        size="mini">编辑
+                </el-button>
+                <el-button
+                        size="mini"
+                        type="danger">删除
+                </el-button>
+            </template>
+        </el-table-column>
+    </el-table>
+    <div style="margin-top: 20px;text-align: center;word-spacing: 60px">
+        <a href="#">首页</a> <a href="">1</a> <a href="">2</a>
+        <a href="">2</a> <a href="">3</a> <a href="">4</a>.....
+        <a href="#">尾页</a>
     </div>
-</form>
-<script type="text/javascript">
 
+    <el-dialog title="添加学生" :visible.sync="dialogFormVisible">
+        <el-form ref="form" :model="form" label-width="80px">
+            <el-form-item label="学生姓名:">
+                <el-input v-model="form.name"></el-input>
+            </el-form-item>
+            <el-form-item label="学生性别:">
+                <el-select v-model="form.region" placeholder="请选择学生性别">
+                    <el-option label="男" value="shanghai"></el-option>
+                    <el-option label="女" value="beijing"></el-option>
+                </el-select>
+            </el-form-item>
+
+            <el-form-item label="学生专业:">
+                <el-input v-model="form.input" placeholder="请输入学生专业名称"></el-input>
+            </el-form-item>
+
+            <el-form-item>
+                <el-button type="primary" @click="onSubmit">确定</el-button>
+                <el-button>重置</el-button>
+            </el-form-item>
+        </el-form>
+    </el-dialog>
+
+</div>
+
+<script type="text/javascript">
+    new Vue({
+        el: '#app',
+        data: {
+            tableData: [{
+                date: '2016-05-02',
+                name: '王小虎',
+                address: '上海市普陀区金沙江路 1518 弄'
+            }, {
+                date: '2016-05-04',
+                name: '王晓天',
+                address: '上海市普陀区金沙江路 1517 弄'
+            }, {
+                date: '2016-05-01',
+                name: '李晓天',
+                address: '上海市普陀区金沙江路 1519 弄'
+            }, {
+                date: '2016-05-03',
+                name: '王小虎',
+                address: '上海市普陀区金沙江路 1516 弄'
+            }, {
+                date: '2016-05-03',
+                name: '王小虎',
+                address: '上海市普陀区金沙江路 1516 弄'
+            }, {
+                date: '2016-05-03',
+                name: '王小虎',
+                address: '上海市普陀区金沙江路 1516 弄'
+            }, {
+                date: '2016-05-03',
+                name: '王小虎',
+                address: '上海市普陀区金沙江路 1516 弄'
+            }, {
+                date: '2016-05-03',
+                name: '王小虎',
+                address: '上海市普陀区金沙江路 1516 弄'
+            }],
+            form: {
+                name: '',
+                region: '',
+                date1: '',
+                date2: '',
+                delivery: false,
+                type: [],
+                resource: '',
+                desc: '',
+                input: ''
+            },
+            dialogFormVisible: false
+        },
+        methods:
+            {
+                alert() {
+                    this.dialogFormVisible = true
+                }
+            }
+    })
 </script>
 </body>
 </html>
